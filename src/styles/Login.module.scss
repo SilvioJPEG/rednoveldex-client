@@ -1,0 +1,25 @@
+.loginWrapper {
+  margin: auto;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  form {
+    display: flex;
+    background-color: #445566;
+    width: 450px;
+    flex-direction: column;
+    row-gap: 10px;
+    border: 1px solid white;
+    border-radius: 10px;
+    padding: 30px 20px;
+
+    button {
+      width: 100px;
+      margin-top: 10px;
+    }
+    color: white;
+  }
+}
