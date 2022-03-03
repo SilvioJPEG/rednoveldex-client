@@ -1,28 +1,23 @@
 import { Avatar } from "@mui/material";
 import styles from "../styles/Profile.module.scss";
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 import poster from "../assets/sample.jpg";
 import React from "react";
 import axios from "axios";
+import { Novel, UserData } from "../types/models";
+import { $api } from "../services/AuthService";
 
-type ProfileData = {
-  username: string;
-  avatar: string;
-  favourites: number[];
-};
+type ProfileProps = {};
 
-type ProfileProps = {
-  userData: ProfileData;
-};
-
-const Profile: React.FC<ProfileProps> = ({}) => {
+const Profile: React.FC<ProfileProps> = () => {
   const { username } = useParams();
-  const [userData, setUserData] = React.useState<ProfileData|null>(null);
+  const [userData, setUserData] = React.useState<UserData | null>(null);
+  const [favourites, setFavourites] = React.useState<Novel[] | null>(null);
+  const getUserData = async () => {
+    const res = await $api.get(`/users/${username}`);
+    if (res.status !== 404) setUserData(res.data);
+  };
   React.useEffect(() => {
-    const getUserData = async () => {
-      const res = await axios.get(`http://localhost:5000/users/${username}`);
-      setUserData(res.data);
-    }
     getUserData();
   }, []);
   return (
@@ -30,7 +25,7 @@ const Profile: React.FC<ProfileProps> = ({}) => {
       <div className={styles.profileHeader}>
         <div className={styles.profileInfo}>
           <Avatar sx={{ width: "100px", height: "100px" }} />
-          <span className={styles.username}>{'@'+userData?.username}</span>
+          <span className={styles.username}>{"@" + userData?.username}</span>
         </div>
         <div className={styles.profileStats}>
           <div className={styles.statisticCol}>
@@ -49,11 +44,11 @@ const Profile: React.FC<ProfileProps> = ({}) => {
       </div>
       <div className={styles.profileBody} style={{ width: "70%" }}>
         <section id={styles.favourites}>
-          <h2>favourite novels</h2>
+          <h2>favourite novels:</h2>
           <ul className={styles.novelList}>
-            <li>
-              <img src={poster} />
-            </li>
+            {favourites
+              ? favourites?.map((novel: Novel) => <li key={novel.id}></li>)
+              : ""}
           </ul>
         </section>
         <section id={styles.recentActivity}>

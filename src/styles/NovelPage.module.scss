@@ -1,0 +1,56 @@
+.novelPageWrapper {
+  display: grid;
+  position: relative;
+  grid-template-columns: 1fr 3fr;
+  margin: auto;
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 10px;
+  }
+  .posterWrapper {
+    position: -webkit-sticky;
+    margin-top: 25px;
+    position: sticky;
+    top: 10px;
+    align-self: center;
+    img {
+      border-radius: 4px;
+      box-shadow: inset 0 0 0 1px rgba(221, 238, 255, 0.35);
+    }
+  }
+  .info {
+    .novelName {
+      font-size: 32px;
+      margin: 0 0 25px;
+    }
+    .synopsis {
+      h3 {
+        font-size: 18px;
+      }
+    }
+  }
+  .reviewsWrapper { 
+    .form {
+      display: flex;
+      flex-direction: column;
+      row-gap: 10px;
+      button {
+        align-self: flex-end;
+      }
+    }
+  }
+}
+
+.addNovelWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+
+  }
+}

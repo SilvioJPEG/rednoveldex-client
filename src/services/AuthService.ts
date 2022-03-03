@@ -1,20 +1,22 @@
 import { AxiosResponse } from "axios";
-import { AuthResponce } from "./models";
+import { AuthResponce } from "../types/auth";
 
 import axios, { AxiosRequestConfig } from "axios";
 
-export const API_URL = "http://localhost:5000";
+const API_URL = "http://localhost:5002";
 
 const $api = axios.create({
   withCredentials: true,
   baseURL: API_URL,
 });
 
-$api.interceptors.request.use((config: AxiosRequestConfig) => {
+const authInterceptor = (config: AxiosRequestConfig) => {
   if (config.headers)
     config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
   return config;
-});
+};
+
+$api.interceptors.request.use(authInterceptor);
 
 export default class AuthService {
   static async login(
@@ -33,6 +35,9 @@ export default class AuthService {
     });
   }
   static async logout(): Promise<void> {
-    return $api.post("/api/auth/logout");
+    return $api.post("/auth/logout");
   }
+
 }
+
+export {API_URL, $api}

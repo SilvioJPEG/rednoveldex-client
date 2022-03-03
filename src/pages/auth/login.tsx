@@ -3,6 +3,7 @@ import React from "react";
 import styles from "../../styles/Login.module.scss";
 import { observer } from "mobx-react-lite";
 import authStore from "../../store/authStore";
+import { useLocation, useNavigate } from "react-router";
 
 interface valuesInterface {
   username: string;
@@ -11,6 +12,8 @@ interface valuesInterface {
 
 const LoginPage: React.FC = () => {
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
+  const navigate = useNavigate();
+  const location = useLocation();
   return (
     <div className={styles.loginWrapper}>
       <Formik
@@ -20,15 +23,18 @@ const LoginPage: React.FC = () => {
           if (!values.username) {
             errors.username = "Required";
           }
-          // } else if (
-          //   !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.username)
-          // ) {
-          //   errors.username = "Invalid email address";
-          // }
+          if (!values.password) {
+            errors.password = "Required";
+          }
           return errors;
         }}
-        onSubmit={(values) => {
-          authStore.login(values.username, values.password);
+        onSubmit={async (values) => {
+          if (authStore.loggedInStatus) return;
+          const status = await authStore.login(
+            values.username,
+            values.password
+          );
+          if (status === 200) navigate("/");
         }}
       >
         <Form className={styles.form}>

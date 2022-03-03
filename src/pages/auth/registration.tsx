@@ -8,7 +8,7 @@ interface valuesInterface {
   password: string;
 }
 
-const RegistrationPage: React.FC = () => {
+const Registration: React.FC = () => {
   const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
   React.useEffect(() => {}, []);
   return (
@@ -19,6 +19,9 @@ const RegistrationPage: React.FC = () => {
           const errors: any = {};
           if (!values.username) {
             errors.username = "Required";
+          }
+          if (!values.password) {
+            errors.password = "Required";
           }
           return errors;
         }}
@@ -43,4 +46,4 @@ const RegistrationPage: React.FC = () => {
   );
 };
 
-export default observer(RegistrationPage);
+export default observer(Registration);

@@ -1,31 +1,35 @@
 import axios from "axios";
 import { makeAutoObservable } from "mobx";
 import AuthService from "../services/AuthService";
-import { AuthResponce, UserType } from "../services/models";
+import { AuthResponce } from "../types/auth";
+import { UserData } from "../types/models";
 
 class AuthStore {
-  user = {} as UserType;
-  isAuth = false;
+  user: UserData = {} as UserData;
+  loggedInStatus: boolean = false;
   constructor() {
     makeAutoObservable(this);
   }
 
   setAuth(newState: boolean) {
-    this.isAuth = newState;
+    this.loggedInStatus = newState;
   }
 
-  setUser(user: UserType) {
+  setUser(user: UserData) {
     this.user = user;
   }
 
   async login(username: string, password: string) {
     try {
       const res = await AuthService.login(username, password);
-      localStorage.setItem("token", res.data.accessToken);
-      this.setAuth(true);
-      this.setUser(res.data.user);
+      if (res.status === 200) {
+        localStorage.setItem("token", res.data.accessToken);
+        this.setAuth(true);
+        this.setUser(res.data.user);
+      }
+      return res.status;
     } catch (e: any) {
-      console.log(e.response?.data?.message);
+      console.log(e.response);
     }
   }
 
@@ -34,7 +38,7 @@ class AuthStore {
       await AuthService.logout();
       localStorage.removeItem("token");
       this.setAuth(false);
-      this.setUser({} as UserType);
+      this.setUser({} as UserData);
     } catch (e: any) {
       console.log(e.response?.data?.message);
     }
@@ -50,17 +54,6 @@ class AuthStore {
     } catch (e: any) {
       console.log(e.response?.data?.message);
     }
-  }
-
-  async checkAuth() {
-    try {
-      const res = await axios.get<AuthResponce>("/login", {
-        withCredentials: true,
-      });
-      localStorage.setItem("token", res.data.accessToken);
-      this.setAuth(true);
-      this.setUser(res.data.user);
-    } catch (e: any) {}
   }
 }
 
