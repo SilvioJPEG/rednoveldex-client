@@ -1,7 +1,5 @@
-import axios from "axios";
 import { makeAutoObservable } from "mobx";
-import AuthService from "../services/AuthService";
-import { AuthResponce } from "../types/auth";
+import AuthService from "../services/auth.service";
 import { UserData } from "../types/models";
 
 class AuthStore {

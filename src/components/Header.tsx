@@ -1,24 +1,23 @@
-import { Avatar } from "@mui/material";
+import { Avatar, ButtonGroup, ListItemIcon } from "@mui/material";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import styles from "../styles/Header.module.scss";
 import logo from "../assets/rednovel.png";
 import { Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import authStore from "../store/authStore";
 import LoginIcon from "@mui/icons-material/Login";
-import LogoutIcon from "@mui/icons-material/Logout";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import FaceIcon from "@mui/icons-material/Face";
 import React from "react";
+import { Logout } from "@mui/icons-material";
+import TextField from "@mui/material/TextField";
 
-type MenuProps = {
-  menuName: string;
-}
-
-const BasicMenu: React.FC<MenuProps> = ({menuName}) => {
+const DropdownMenu = observer(() => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event:any) => {
+  const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -33,8 +32,9 @@ const BasicMenu: React.FC<MenuProps> = ({menuName}) => {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
+        endIcon={<KeyboardArrowDownIcon />}
       >
-        {menuName}
+        <div>{authStore.user.username}</div>
       </Button>
       <Menu
         id="basic-menu"
@@ -45,33 +45,58 @@ const BasicMenu: React.FC<MenuProps> = ({menuName}) => {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link to={`/u/${authStore.user.username}`}>
+            <ListItemIcon>
+              <FaceIcon fontSize="small" />
+            </ListItemIcon>
+            Profile
+          </Link>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link to={`/u/${authStore.user.username}/journal`}>Journal</Link>
+        </MenuItem>
+        <MenuItem onClick={handleClose}>
+          <Link to="/settings">Settings</Link>
+        </MenuItem>
+
+        <MenuItem
+          onClick={() => {
+            authStore.logout();
+          }}
+        >
+          <ListItemIcon>
+            <Logout fontSize="small" />
+          </ListItemIcon>
+          Logout
+        </MenuItem>
       </Menu>
     </div>
   );
-};
+});
+
 const Header: React.FC = () => {
   return (
     <header className={styles.headerWrapper}>
+      <Link to="/">
+        <div className={styles.logo}>
+          <img src={logo} alt="logo" />
+        </div>
+      </Link>
       <div className={styles.nav}>
-        <Link to="/">
-          <div className={styles.logo}>
-            <img src={logo} alt="logo" />
-          </div>
-        </Link>
-        {authStore.user.username && (
-          <span className={styles.navItem}>
-            <Link to={`/u/${authStore.user.username}`}>
-              <Avatar sx={{ width: "40px", height: "40px" }} />
-            </Link>
-          </span>
-        )}
+        <TextField variant="outlined" />
         {authStore.loggedInStatus && (
-          <Link to="/novel/add">
-            <button className="redBtn">Add</button>
-          </Link>
+          <>
+            <DropdownMenu />
+            <ButtonGroup>
+              <Button variant="contained" color="success">
+                <Link to="/novel/add">Log</Link>
+              </Button>
+              <Button variant="contained" color="success">
+                <KeyboardArrowDownIcon />
+              </Button>
+            </ButtonGroup>
+          </>
         )}
         {!authStore.loggedInStatus && (
           <>
@@ -84,11 +109,6 @@ const Header: React.FC = () => {
               </Link>
             </span>
           </>
-        )}
-        {authStore.loggedInStatus && (
-          <span className={styles.navItem} onClick={() => authStore.logout()}>
-            <LogoutIcon />
-          </span>
         )}
       </div>
     </header>

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { Novel } from "../types/models";
 import poster from "../assets/sample.jpg";
 
-const novelWrapper = (novel: Novel) => {
+const NovelWrapper = (novel: Novel) => {
   return (
     <Link to={`/novel/${novel.id}`} className="novelWrapper">
       <img src={poster} alt={novel.title} />
@@ -11,4 +11,4 @@ const novelWrapper = (novel: Novel) => {
     </Link>
   );
 };
-export default novelWrapper;
+export default NovelWrapper;

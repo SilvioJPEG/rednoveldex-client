@@ -3,13 +3,14 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import styles from "../../styles/Login.module.scss";
 import authStore from "../../store/authStore";
+import Button from "@mui/material/Button";
 interface valuesInterface {
   username: string;
   password: string;
 }
 
 const Registration: React.FC = () => {
-  const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<boolean>(false);
   React.useEffect(() => {}, []);
   return (
     <div className={styles.loginWrapper}>
@@ -37,9 +38,9 @@ const Registration: React.FC = () => {
           <label htmlFor="password">Password</label>
           <Field type="password" name="password" />
           <ErrorMessage name="password" component="div" />
-          <button type="submit" className="greenBtn" disabled={isSubmitting}>
+          <Button  type="submit" color="success" variant="contained" disabled={loading}>
             Submit
-          </button>
+          </Button >
         </Form>
       </Formik>
     </div>

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import styles from "../../styles/NovelPage.module.scss";
-import {API_URL, $api} from "../../services/AuthService";
+import {$api} from "../../services/auth.service";
 
 interface valuesInterface {
     title: string;

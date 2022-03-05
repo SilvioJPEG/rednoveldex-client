@@ -1,8 +1,8 @@
 import axios from "axios";
 import React from "react";
 import { useParams } from "react-router";
-import novelWrapper from "../components/novelWrapper";
-import { API_URL } from "../services/AuthService";
+import novelWrapper from "../components/NovelWrapper";
+import { API_URL } from "../services/auth.service";
 import { Novel } from "../types/models";
 
 const Journal: React.FC = () => {

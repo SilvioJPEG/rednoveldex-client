@@ -11,7 +11,7 @@
   }
   .posterWrapper {
     position: -webkit-sticky;
-    margin-top: 25px;
+    margin-top: 10px;
     position: sticky;
     top: 10px;
     align-self: center;
@@ -53,4 +53,21 @@
     row-gap: 10px;
 
   }
+}
+.actionWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  &:hover {
+    cursor: pointer;
+    span {
+      color: white;
+    }
+  }
+  span {
+    color: var(--text-default-color);
+  }
+}
+.actionUsed {
+  color: var(--red-color);
 }

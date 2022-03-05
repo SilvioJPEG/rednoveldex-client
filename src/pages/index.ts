@@ -4,5 +4,6 @@ export { default as NotFound } from "./404";
 export { default as Main } from "./Main";
 export { default as AddNovel } from "./novel/addNovel";
 export { default as NovelPage } from "./novel/";
-export { default as Login } from "./auth/login";
-export { default as Registration } from "./auth/registration";
+export { default as Login } from "./auth/Login";
+export { default as Registration } from "./auth/Registration";
+export { default as ListsPage } from "./Lists";

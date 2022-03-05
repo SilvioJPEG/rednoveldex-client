@@ -1,11 +1,11 @@
 import { Avatar } from "@mui/material";
 import styles from "../styles/Profile.module.scss";
-import { useParams, Navigate } from "react-router-dom";
-import poster from "../assets/sample.jpg";
+import { useParams } from "react-router-dom";
 import React from "react";
-import axios from "axios";
 import { Novel, UserData } from "../types/models";
-import { $api } from "../services/AuthService";
+import { $api } from "../services/auth.service";
+import FavouritesService from "../services/favourites.service";
+import NovelWrapper from "../components/NovelWrapper";
 
 type ProfileProps = {};
 
@@ -14,8 +14,12 @@ const Profile: React.FC<ProfileProps> = () => {
   const [userData, setUserData] = React.useState<UserData | null>(null);
   const [favourites, setFavourites] = React.useState<Novel[] | null>(null);
   const getUserData = async () => {
-    const res = await $api.get(`/users/${username}`);
-    if (res.status !== 404) setUserData(res.data);
+    if (username) {
+      const userRes = await $api.get(`/users/${username}`);
+      if (userRes.status !== 404) setUserData(userRes.data);
+      const favouritesRes = await FavouritesService.getAll(username);
+      setFavourites(favouritesRes.data);
+    }
   };
   React.useEffect(() => {
     getUserData();
@@ -46,9 +50,10 @@ const Profile: React.FC<ProfileProps> = () => {
         <section id={styles.favourites}>
           <h2>favourite novels:</h2>
           <ul className={styles.novelList}>
-            {favourites
-              ? favourites?.map((novel: Novel) => <li key={novel.id}></li>)
-              : ""}
+            {favourites &&
+              favourites?.map((novel: Novel) => (
+                <li key={novel.id}>{NovelWrapper(novel)}</li>
+              ))}
           </ul>
         </section>
         <section id={styles.recentActivity}>

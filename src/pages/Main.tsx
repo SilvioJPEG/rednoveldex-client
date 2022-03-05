@@ -1,8 +1,8 @@
 import axios from "axios";
 import React from "react";
 import styles from "../styles/Main.module.scss";
-import { API_URL } from "../services/AuthService";
-import novelWrapper from "../components/novelWrapper";
+import { API_URL } from "../services/auth.service";
+import NovelWrapper from "../components/NovelWrapper";
 import { Novel } from "../types/models";
 
 const Main: React.FC = () => {
@@ -22,15 +22,14 @@ const Main: React.FC = () => {
         <div className={styles.recentlyAdded}>
           <h2>Recently added to database:</h2>
           <hr />
-          <div>
+          <div className={styles.recentlyAdded__row}>
             {recentNovels.map((novel) => (
-              <div key={novel.id}>
-                {novelWrapper(novel)}
-              </div>
+              <div key={novel.id}>{NovelWrapper(novel)}</div>
             ))}
           </div>
         </div>
       )}
+
     </div>
   );
 };

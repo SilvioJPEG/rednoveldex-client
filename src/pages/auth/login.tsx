@@ -4,6 +4,7 @@ import styles from "../../styles/Login.module.scss";
 import { observer } from "mobx-react-lite";
 import authStore from "../../store/authStore";
 import { useLocation, useNavigate } from "react-router";
+import Button from "@mui/material/Button";
 
 interface valuesInterface {
   username: string;
@@ -11,7 +12,7 @@ interface valuesInterface {
 }
 
 const LoginPage: React.FC = () => {
-  const [isSubmitting, setSubmitting] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
   return (
@@ -34,7 +35,7 @@ const LoginPage: React.FC = () => {
             values.username,
             values.password
           );
-          if (status === 200) navigate("/");
+          if (status === 200 && authStore.user.username) navigate("/");
         }}
       >
         <Form className={styles.form}>
@@ -44,9 +45,14 @@ const LoginPage: React.FC = () => {
           <label htmlFor="password">Password</label>
           <Field type="password" name="password" />
           <ErrorMessage name="password" component="div" />
-          <button type="submit" className="greenBtn" disabled={isSubmitting}>
+          <Button
+            type="submit"
+            color="success"
+            variant="contained"
+            disabled={loading}
+          >
             Submit
-          </button>
+          </Button>
         </Form>
       </Formik>
     </div>
