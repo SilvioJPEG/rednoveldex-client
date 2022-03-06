@@ -1,0 +1,26 @@
+.formWrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 20px;
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+  }
+  .inputWrapper {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+    padding-bottom: 30px;
+    button {
+      align-self: flex-start;
+    }
+  }
+  .listItems {
+    border: 1px solid var(--text-color);
+  }
+}
+.searchWrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+}

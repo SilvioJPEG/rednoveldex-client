@@ -7,6 +7,7 @@ import LibraryBooksIcon from "@mui/icons-material/LibraryBooks";
 import PersonIcon from "@mui/icons-material/Person";
 import SummarizeIcon from "@mui/icons-material/Summarize";
 import HomeIcon from "@mui/icons-material/Home";
+import LogoutIcon from "@mui/icons-material/Logout";
 const Sidebar: React.FC = () => {
   return (
     <aside className={styles.sidebar}>
@@ -35,6 +36,10 @@ const Sidebar: React.FC = () => {
           <span>Lists</span>
         </div>
       </Link>
+      <div className={styles.sidebarBtn} onClick={() => authStore.logout()}>
+        <LogoutIcon />
+        <span>Logout</span>
+      </div>
     </aside>
   );
 };

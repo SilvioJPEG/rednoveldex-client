@@ -17,20 +17,21 @@ const Main: React.FC = () => {
     getRecentNovels(4);
   }, []);
   return (
-    <div className="contentWrapper">
+    <article className="contentWrapper">
       {recentNovels && (
         <div className={styles.recentlyAdded}>
           <h2>Recently added to database:</h2>
           <hr />
           <div className={styles.recentlyAdded__row}>
             {recentNovels.map((novel) => (
-              <div key={novel.id}>{NovelWrapper(novel)}</div>
+              <div key={novel.id}>
+                <NovelWrapper novel={novel} type={"big"} />
+              </div>
             ))}
           </div>
         </div>
       )}
-
-    </div>
+    </article>
   );
 };
 

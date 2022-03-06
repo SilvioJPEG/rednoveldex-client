@@ -1,7 +1,7 @@
 import axios from "axios";
 import React from "react";
 import { useParams } from "react-router";
-import novelWrapper from "../components/NovelWrapper";
+import NovelWrapper from "../components/NovelWrapper";
 import { API_URL } from "../services/auth.service";
 import { Novel } from "../types/models";
 
@@ -19,8 +19,8 @@ const Journal: React.FC = () => {
     <div>
       <h1>Journal</h1>
       {journalList &&
-        journalList.map((Novel) => {
-          novelWrapper(Novel);
+        journalList.map((novel) => {
+          <NovelWrapper novel={novel} type={"small"} />;
         })}
     </div>
   );

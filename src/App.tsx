@@ -1,6 +1,6 @@
 import React from "react";
 import "./styles/globals.scss";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Header from "./components/Header";
@@ -13,25 +13,35 @@ import {
   Main,
   NovelPage,
   AddNovel,
-  ListsPage
+  ListsPage,
+  CreateListPage,
 } from "./pages";
 import { observer } from "mobx-react-lite";
 import authStore from "./store/authStore";
+import UsersService from "./services/user.service";
 import { blueGrey, deepOrange } from "@mui/material/colors";
 import Sidebar from "./components/Sidebar";
+import Cookies from "js-cookie";
 
 const outerTheme = createTheme({
   palette: {
     primary: {
       main: blueGrey[400],
     },
-    secondary: deepOrange,
   },
 });
 
 function App() {
+  const getCurrentUserProfile = async () => {
+    const username = Cookies.get("signed_as");
+    if (username) {
+      await UsersService.getLoggedInProfileData(username);
+    }
+  };
   React.useEffect(() => {
-    //TODO: refresh token on load
+    if (!authStore.loggedInStatus) {
+      getCurrentUserProfile();
+    }
   }, []);
 
   return (
@@ -39,7 +49,7 @@ function App() {
       <Header />
       <Grid container>
         <Grid item xs={3}>
-          <Sidebar />
+          {authStore.loggedInStatus && <Sidebar />}
         </Grid>
         <Grid item xs={6}>
           <Routes>
@@ -65,11 +75,11 @@ function App() {
                   <Route path="journal" element={<Journal />} />
                 </Route>
               </Route>
+              <Route path="/list/new" element={<CreateListPage />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
         </Grid>
-
       </Grid>
     </ThemeProvider>
   );

@@ -1,12 +1,10 @@
-import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import styles from "../../styles/NovelPage.module.scss";
-import {$api} from "../../services/auth.service";
+import { $api } from "../../services/auth.service";
 
 interface valuesInterface {
-    title: string;
-
-  }
+  title: string;
+}
 
 const AddNovel: React.FC = () => {
   return (
@@ -36,10 +34,10 @@ const AddNovel: React.FC = () => {
           <Field type="textarea" name="description" />
           <ErrorMessage name="description" component="div" />
 
-          <label htmlFor="release" >Release date</label>
+          <label htmlFor="release">Release date</label>
           <Field type="date" name="release" />
           <ErrorMessage name="release" component="div" />
-        
+
           <button type="submit" className="greenBtn">
             Submit
           </button>

@@ -6,4 +6,5 @@ export { default as AddNovel } from "./novel/addNovel";
 export { default as NovelPage } from "./novel/";
 export { default as Login } from "./auth/Login";
 export { default as Registration } from "./auth/Registration";
-export { default as ListsPage } from "./Lists";
+export { default as ListsPage } from "./lists/Lists";
+export { default as CreateListPage } from "./lists/CreateList";

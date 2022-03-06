@@ -4,7 +4,7 @@ import React from "react";
 import styles from "../../styles/Login.module.scss";
 import authStore from "../../store/authStore";
 import Button from "@mui/material/Button";
-interface valuesInterface {
+interface createAccountDto {
   username: string;
   password: string;
 }
@@ -16,7 +16,7 @@ const Registration: React.FC = () => {
     <div className={styles.loginWrapper}>
       <Formik
         initialValues={{ username: "", password: "" }}
-        validate={(values: valuesInterface) => {
+        validate={(values: createAccountDto) => {
           const errors: any = {};
           if (!values.username) {
             errors.username = "Required";

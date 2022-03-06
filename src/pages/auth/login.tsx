@@ -11,7 +11,7 @@ interface valuesInterface {
   password: string;
 }
 
-const LoginPage: React.FC = () => {
+const LoginPage: React.FC = observer(() => {
   const [loading, setLoading] = React.useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,11 +31,15 @@ const LoginPage: React.FC = () => {
         }}
         onSubmit={async (values) => {
           if (authStore.loggedInStatus) return;
+          setLoading(true);
           const status = await authStore.login(
             values.username,
             values.password
           );
-          if (status === 200 && authStore.user.username) navigate("/");
+          if (status === 200 && authStore.loggedInStatus) {
+            setLoading(false);
+          }
+          if (!loading) navigate("/");
         }}
       >
         <Form className={styles.form}>
@@ -57,5 +61,5 @@ const LoginPage: React.FC = () => {
       </Formik>
     </div>
   );
-};
-export default observer(LoginPage);
+});
+export default LoginPage;

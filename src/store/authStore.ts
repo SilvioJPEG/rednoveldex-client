@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { makeAutoObservable } from "mobx";
 import AuthService from "../services/auth.service";
 import { UserData } from "../types/models";
@@ -21,10 +22,10 @@ class AuthStore {
     try {
       const res = await AuthService.login(username, password);
       if (res.status === 200) {
-        localStorage.setItem("token", res.data.accessToken);
-        this.setAuth(true);
         this.setUser(res.data.user);
+        this.setAuth(true);
       }
+      console.log(this.user);
       return res.status;
     } catch (e: any) {
       console.log(e.response);
@@ -34,9 +35,10 @@ class AuthStore {
   async logout() {
     try {
       await AuthService.logout();
-      localStorage.removeItem("token");
-      this.setAuth(false);
+      Cookies.remove("access_token");
+      Cookies.remove("signed_as");
       this.setUser({} as UserData);
+      this.setAuth(false);
     } catch (e: any) {
       console.log(e.response?.data?.message);
     }
@@ -45,9 +47,8 @@ class AuthStore {
   async register(username: string, password: string) {
     try {
       const res = await AuthService.registration(username, password);
-      localStorage.setItem("token", res.data.accessToken);
-      this.setAuth(true);
       this.setUser(res.data.user);
+      this.setAuth(true);
       return res;
     } catch (e: any) {
       console.log(e.response?.data?.message);

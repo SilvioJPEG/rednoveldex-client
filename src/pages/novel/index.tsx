@@ -1,19 +1,20 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useFormik } from "formik";
 import axios from "axios";
 import React from "react";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import styles from "../../styles/NovelPage.module.scss";
 import sample from "../../assets/sample.jpg";
 import { API_URL } from "../../services/auth.service";
 import JournalService from "../../services/journal.service";
 import FavouritesService from "../../services/favourites.service";
 import Stack from "@mui/material/Stack";
-import { Button } from "@mui/material";
+import { Button, InputBase } from "@mui/material";
 import authStore from "../../store/authStore";
+import ReviewService from "../../services/review.service";
 
 type NovelData = {
   title: string;
@@ -27,6 +28,7 @@ const NovelPage: React.FC = () => {
   const [inJournal, setInJournal] = React.useState<boolean>(false);
   const [inFavourites, setInFavourites] = React.useState<boolean>(false);
   const { id } = useParams();
+  const navigate = useNavigate();
   const getNovelData = async () => {
     const res = await axios.get(`${API_URL}/novels/${id}`);
     if (res.status === 200) setNovelData(res.data);
@@ -50,13 +52,30 @@ const NovelPage: React.FC = () => {
     }
   };
   React.useEffect(() => {
+    if (id === undefined) navigate("/");
     getNovelData();
     if (authStore.loggedInStatus) {
       checkIfInJournal();
       checkIfFavourited();
     }
   }, []);
-
+  const formik = useFormik({
+    initialValues: {
+      content: "",
+    },
+    validate: (values: { content: string }) => {
+      const errors: any = {};
+      if (!values.content) {
+        errors.content = "Required";
+      }
+      return errors;
+    },
+    onSubmit: async (values) => {
+      if (id) {
+        ReviewService.addReview(Number(id), values.content);
+      }
+    },
+  });
   return (
     <div className="contentWrapper">
       <div className={styles.novelPageWrapper}>
@@ -100,6 +119,7 @@ const NovelPage: React.FC = () => {
 
         <section className={styles.info}>
           <h1 className={styles.novelName}>{novelData?.title}</h1>
+          <h2>Information:</h2>
           <span>
             <b>Premiered: </b>
             {novelData ? novelData.releaseDate : "-"}
@@ -109,29 +129,34 @@ const NovelPage: React.FC = () => {
             <p>{novelData !== null ? novelData.description : "-"}</p>
           </div>
           <div className={styles.reviewsWrapper}>
-            <b>Reviews:</b>
-            <hr />
-            <Formik
-              initialValues={{ context: "" }}
-              validate={(values: { context: string }) => {
-                const errors: any = {};
-                if (!values.context) {
-                  errors.context = "Required";
-                }
-                return errors;
-              }}
-              onSubmit={async (values) => {}}
-            >
-              <Form className={styles.form}>
-                <label htmlFor="context">Write your own review:</label>
-                <Field type="text" as="textarea" rows="10" name="context" />
-                <ErrorMessage name="context" component="div" />
+            <h2>Recent reviews:</h2>
+            {authStore.loggedInStatus && (
+              <form className={styles.form} onSubmit={formik.handleSubmit}>
+                <InputBase
+                  multiline
+                  minRows={6}
+                  id="content"
+                  type="textarea"
+                  name="content"
+                  autoComplete="off"
+                  value={formik.values.content}
+                  onChange={formik.handleChange}
+                  error={
+                    formik.touched.content && Boolean(formik.errors.content)
+                  }
+                  sx={{
+                    color: "var(--input-text-color)",
+                    backgroundColor: "var(--input-background-color)",
+                    borderBottom: "1px solid var(--input-text-color)",
+                    borderRadius: "4px",
+                    padding: "5px 10px",
+                  }}
+                />
                 <Button type="submit" variant="contained" color="success">
                   Submit
                 </Button>
-              </Form>
-            </Formik>
-            <h2>Recent reviews:</h2>
+              </form>
+            )}
           </div>
         </section>
       </div>
