@@ -37,7 +37,13 @@ const CreateListPage: React.FC = () => {
             </div>
             <div className={styles.inputWrapper}>
               <label htmlFor="description">Description</label>
-              <Field type="text" component="textarea" rows="7"  name="description" autoComplete="off" />
+              <Field
+                type="text"
+                component="textarea"
+                rows="7"
+                name="description"
+                autoComplete="off"
+              />
             </div>
           </div>
           <div className={styles.formWrapper__footer}>
@@ -51,7 +57,7 @@ const CreateListPage: React.FC = () => {
                   alignItems: "center",
                 }}
               >
-                <Button>Add</Button>
+                <Button color="success">Add</Button>
                 <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
                 <InputBase
                   sx={{

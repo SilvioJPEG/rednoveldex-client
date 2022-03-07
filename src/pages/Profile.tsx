@@ -61,7 +61,6 @@ const Profile: React.FC<ProfileProps> = () => {
           </div>
         </div>
       </div>
-      <div className="profileInfo"></div>
       <div className={styles.profileBody}>
         <section id={styles.favourites}>
           <h2>favourites:</h2>

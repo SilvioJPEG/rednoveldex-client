@@ -5,14 +5,14 @@ export default class FavouritesService {
     const res = await $api.patch(
       `novels/favourites/${novel_id}/update-favourites`
     );
-    return res;
+    return res.status;
   }
-  static async checkIfFavourited(novel_id: number) {
+  static async checkIfFavourited(novel_id: number): Promise<boolean> {
     const res = await $api.get(
       `novels/favourites/${novel_id}/check-favourites`
     );
     if (res.status === 200) {
-      return res.data;
+      return res.data.InFavourites;
     } else {
       return false;
     }

@@ -11,14 +11,6 @@ const $api = axios.create({
   baseURL: API_URL,
 });
 
-// const authInterceptor = (config: AxiosRequestConfig) => {
-//   if (config.headers)
-//     config.headers.Authorization = `Bearer ${Cookies.get("access_token")}`;
-//   return config;
-// };
-
-$api.interceptors.request.use();
-
 export default class AuthService {
   static async login(username: string, password: string) {
     return await $api.post<AuthResponce>("/auth/login", { username, password });

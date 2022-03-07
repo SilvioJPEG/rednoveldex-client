@@ -1,40 +1,36 @@
 import { useFormik } from "formik";
-import axios from "axios";
+import styles from "../../styles/NovelPage.module.scss";
 import React from "react";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useParams, useNavigate } from "react-router-dom";
-import styles from "../../styles/NovelPage.module.scss";
-import sample from "../../assets/sample.jpg";
-import { API_URL } from "../../services/auth.service";
 import JournalService from "../../services/journal.service";
 import FavouritesService from "../../services/favourites.service";
 import Stack from "@mui/material/Stack";
 import { Button, InputBase } from "@mui/material";
 import authStore from "../../store/authStore";
 import ReviewService from "../../services/review.service";
-
-type NovelData = {
-  title: string;
-  description: string;
-  releaseDate: Date;
-  poster?: string;
-};
+import { Novel, Review } from "../../types/models";
+import NovelsService from "../../services/novels.service";
+import ReviewWrapper from "../../components/Review";
 
 const NovelPage: React.FC = () => {
-  const [novelData, setNovelData] = React.useState<NovelData | null>(null);
+  const [novelData, setNovelData] = React.useState<Novel | null>(null);
   const [inJournal, setInJournal] = React.useState<boolean>(false);
   const [inFavourites, setInFavourites] = React.useState<boolean>(false);
+  const [reviews, setReviews] = React.useState<null | Review[]>(null);
+
   const { id } = useParams();
   const navigate = useNavigate();
   const getNovelData = async () => {
-    const res = await axios.get(`${API_URL}/novels/${id}`);
-    if (res.status === 200) setNovelData(res.data);
+    const novelData = await NovelsService.getNovelData(Number(id));
+    setNovelData(novelData);
   };
   const checkIfInJournal = async () => {
-    setInJournal(await JournalService.checkIfInJournal(Number(id)));
+    const inJournalBoolean = await JournalService.checkIfInJournal(Number(id));
+    setInJournal(inJournalBoolean);
   };
   const updateJournal = async () => {
     const resInJournal = await JournalService.updateJournal(Number(id));
@@ -43,13 +39,18 @@ const NovelPage: React.FC = () => {
     }
   };
   const checkIfFavourited = async () => {
-    setInFavourites(await FavouritesService.checkIfFavourited(Number(id)));
+    const inFavBoolean = await FavouritesService.checkIfFavourited(Number(id));
+    setInFavourites(inFavBoolean);
   };
   const updateFavourites = async () => {
-    const res = await FavouritesService.updateFavourites(Number(id));
-    if (res.status === 200) {
+    const status = await FavouritesService.updateFavourites(Number(id));
+    if (status === 200) {
       setInFavourites(!inFavourites);
     }
+  };
+  const getReviews = async () => {
+    const reviewsData = await ReviewService.getReviews(Number(id));
+    setReviews(reviewsData);
   };
   React.useEffect(() => {
     if (id === undefined) navigate("/");
@@ -57,6 +58,7 @@ const NovelPage: React.FC = () => {
     if (authStore.loggedInStatus) {
       checkIfInJournal();
       checkIfFavourited();
+      getReviews();
     }
   }, []);
   const formik = useFormik({
@@ -81,7 +83,7 @@ const NovelPage: React.FC = () => {
       <div className={styles.novelPageWrapper}>
         <aside className={styles.sidebar}>
           <div className={styles.posterWrapper}>
-            <img src={sample} alt="sample" width={200} />
+            <img src={novelData?.image} alt={novelData?.title} width={200} />
           </div>
           {authStore.loggedInStatus && (
             <Stack direction="row" spacing={2}>
@@ -116,17 +118,18 @@ const NovelPage: React.FC = () => {
             </Stack>
           )}
         </aside>
-
-        <section className={styles.info}>
-          <h1 className={styles.novelName}>{novelData?.title}</h1>
-          <h2>Information:</h2>
-          <span>
-            <b>Premiered: </b>
-            {novelData ? novelData.releaseDate : "-"}
-          </span>
-          <div className={styles.synopsis}>
-            <h3>synopsis:</h3>
-            <p>{novelData !== null ? novelData.description : "-"}</p>
+        <section className={styles.rightCol}>
+          <div className={styles.info}>
+            <h1 className={styles.novelName}>{novelData?.title}</h1>
+            <h2>Information:</h2>
+            <span>
+              <b>Release date: </b>
+              {novelData ? novelData.releaseDate : "-"}
+            </span>
+            <div className={styles.synopsis}>
+              <b>synopsis: </b>
+              {novelData !== null ? novelData.description : "-"}
+            </div>
           </div>
           <div className={styles.reviewsWrapper}>
             <h2>Recent reviews:</h2>
@@ -157,6 +160,10 @@ const NovelPage: React.FC = () => {
                 </Button>
               </form>
             )}
+            {reviews &&
+              reviews.map((review: Review, index) => (
+                <ReviewWrapper key={index} review={review} />
+              ))}
           </div>
         </section>
       </div>

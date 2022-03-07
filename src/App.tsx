@@ -2,7 +2,6 @@ import React from "react";
 import "./styles/globals.scss";
 import { Navigate, Route, Routes } from "react-router-dom";
 import Grid from "@mui/material/Grid";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Header from "./components/Header";
 import {
   Login,
@@ -12,26 +11,20 @@ import {
   Journal,
   Main,
   NovelPage,
-  AddNovel,
   ListsPage,
   CreateListPage,
+  FindNovelPage,
 } from "./pages";
 import { observer } from "mobx-react-lite";
 import authStore from "./store/authStore";
 import UsersService from "./services/user.service";
-import { blueGrey, deepOrange } from "@mui/material/colors";
+
 import Sidebar from "./components/Sidebar";
 import Cookies from "js-cookie";
-
-const outerTheme = createTheme({
-  palette: {
-    primary: {
-      main: blueGrey[400],
-    },
-  },
-});
+import { useTheme } from "@mui/material";
 
 function App() {
+  const theme = useTheme();
   const getCurrentUserProfile = async () => {
     const username = Cookies.get("signed_as");
     if (username) {
@@ -45,7 +38,7 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider theme={outerTheme}>
+    <div className={"appWrapper " + theme.palette.mode}>
       <Header />
       <Grid container>
         <Grid item xs={3}>
@@ -68,7 +61,7 @@ function App() {
                 </>
               )}
               <Route path="novel/:id" element={<NovelPage />} />
-              <Route path="novel/add" element={<AddNovel />} />
+              <Route path="novel/add" element={<FindNovelPage />} />
               <Route path="u">
                 <Route path=":username">
                   <Route path="" element={<Profile />} />
@@ -81,7 +74,7 @@ function App() {
           </Routes>
         </Grid>
       </Grid>
-    </ThemeProvider>
+    </div>
   );
 }
 

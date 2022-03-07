@@ -5,31 +5,9 @@ import logo from "../assets/rednovel.png";
 import { Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import authStore from "../store/authStore";
-import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
 import React from "react";
-
-import Paper from "@mui/material/Paper";
-import InputBase from "@mui/material/InputBase";
-
-function CustomizedInputBase() {
-  return (
-    <Paper
-      component="form"
-      id={styles.searchBar}
-      sx={{
-        p: "2px 4px",
-        display: "flex",
-        alignItems: "center",
-        width: 200,
-        backgroundColor: "var(--background-color)",
-      }}
-    >
-      <InputBase sx={{ ml: 1, flex: 1, color: "var(--text-color)" }} />
-      <SearchIcon htmlColor="var(--text-color)" />
-    </Paper>
-  );
-}
+import SearchBar from "./SearchBar";
 
 const Header: React.FC = () => {
   return (
@@ -53,7 +31,7 @@ const Header: React.FC = () => {
           </div>
         )}
         <div className={styles.nav}>
-          {CustomizedInputBase()}
+          {<SearchBar/>}
           {authStore.loggedInStatus && (
             <>
               <ButtonGroup>

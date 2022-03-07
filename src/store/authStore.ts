@@ -18,7 +18,7 @@ class AuthStore {
     this.user = user;
   }
 
-  async login(username: string, password: string) {
+  async login(username: string, password: string): Promise<number> {
     try {
       const res = await AuthService.login(username, password);
       if (res.status === 200) {
@@ -29,6 +29,7 @@ class AuthStore {
       return res.status;
     } catch (e: any) {
       console.log(e.response);
+      return 400;
     }
   }
 
@@ -44,14 +45,17 @@ class AuthStore {
     }
   }
 
-  async register(username: string, password: string) {
+  async register(
+    username: string,
+    password: string
+  ): Promise<number | undefined> {
     try {
       const res = await AuthService.registration(username, password);
       this.setUser(res.data.user);
       this.setAuth(true);
-      return res;
+      return res.status;
     } catch (e: any) {
-      console.log(e.response?.data?.message);
+      return e.response.data.message;
     }
   }
 }

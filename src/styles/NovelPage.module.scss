@@ -20,18 +20,14 @@
       box-shadow: inset 0 0 0 1px rgba(221, 238, 255, 0.35);
     }
   }
-  .info {
-    .novelName {
-      font-size: 32px;
-      margin: 0 0 25px;
-    }
-    .synopsis {
-      h3 {
-        font-size: 18px;
-      }
-    }
+  .novelName {
+    font-size: 32px;
+    margin: 0 0 25px;
   }
-  .reviewsWrapper { 
+  .info {
+    padding-bottom: 50px;
+  }
+  .reviewsWrapper {
     .form {
       display: flex;
       flex-direction: column;
@@ -43,17 +39,6 @@
   }
 }
 
-.addNovelWrapper {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  form {
-    display: flex;
-    flex-direction: column;
-    row-gap: 10px;
-
-  }
-}
 .actionWrapper {
   display: flex;
   flex-direction: column;
@@ -70,4 +55,15 @@
 }
 .actionUsed {
   color: var(--red-color);
+}
+.addForm {
+  padding: 2px 4px;
+  display: flex;
+  justify-content: space-between;
+  margin: auto;
+  width: 80%;
+  padding-top: 130px;
+  align-items: center;
+  background-color: var(--background-color);
+  border-bottom: 1px solid var(--text-color);
 }
