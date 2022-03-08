@@ -13,4 +13,8 @@ export default class JournalService {
     }
     return false;
   }
+  static async getJournalEntities(username: string) {
+    const res = await $api.get(`/journal/${username}`);
+    return res.data;
+  }
 }

@@ -2,11 +2,13 @@ import { Avatar, Button } from "@mui/material";
 import styles from "../styles/Profile.module.scss";
 import { useParams, useNavigate } from "react-router-dom";
 import React from "react";
-import { Novel, UserData } from "../types/models";
-import { $api } from "../services/auth.service";
+import { Novel, ReviewModel, UserData } from "../types/models";
 import FavouritesService from "../services/favourites.service";
 import NovelWrapper from "../components/NovelWrapper";
+import ReviewsService from "../services/review.service";
 import authStore from "../store/authStore";
+import Review from "../components/Review";
+import UsersService from "../services/user.service";
 
 type ProfileProps = {};
 
@@ -15,12 +17,17 @@ const Profile: React.FC<ProfileProps> = () => {
   let navigate = useNavigate();
   const [userData, setUserData] = React.useState<UserData | null>(null);
   const [favourites, setFavourites] = React.useState<Novel[] | null>(null);
+  const [reviews, setReviews] = React.useState<ReviewModel[] | null>(null);
   const getUserData = async () => {
     if (username) {
-      const userRes = await $api.get(`/users/${username}`);
-      if (userRes.status !== 404) setUserData(userRes.data);
-      const favouritesRes = await FavouritesService.getAll(username);
-      setFavourites(favouritesRes.data);
+      if (username) {
+        const userData = await UsersService.getUserProfile(username);
+        setUserData(userData);
+        const favouritesRes = await FavouritesService.getAll(username);
+        setFavourites(favouritesRes.data);
+        const reviews = await ReviewsService.getReviewsByUser(username);
+        setReviews(reviews);
+      }
     }
   };
   React.useEffect(() => {
@@ -63,14 +70,15 @@ const Profile: React.FC<ProfileProps> = () => {
       </div>
       <div className={styles.profileBody}>
         <section id={styles.favourites}>
-          <h2>favourites:</h2>
+          <h2>favourites</h2>
           <ul className={styles.novelList}>
-            {favourites &&
-              favourites?.map((novel: Novel) => (
-                <li key={novel.id}>
-                  {<NovelWrapper novel={novel} type={"small"} />}
-                </li>
-              ))}
+            {favourites
+              ? favourites.map((novel: Novel) => (
+                  <li key={novel.id}>
+                    {<NovelWrapper novel={novel} type={"small"} />}
+                  </li>
+                ))
+              : "-"}
           </ul>
         </section>
         <section id={styles.recentActivity}>
@@ -78,6 +86,7 @@ const Profile: React.FC<ProfileProps> = () => {
         </section>
         <section id={styles.lists}>
           <h2>recent reviews</h2>
+          {reviews ? reviews.map((review) => <Review review={review} />) : "-"}
         </section>
       </div>
     </div>

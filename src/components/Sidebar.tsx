@@ -30,7 +30,7 @@ const Sidebar: React.FC = () => {
         </div>
       </Link>
 
-      <Link to={`/lists`}>
+      <Link to={`/u/${authStore.user.username}/lists`}>
         <div className={styles.sidebarBtn}>
           <SummarizeIcon />
           <span>Lists</span>

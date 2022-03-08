@@ -18,7 +18,6 @@ import {
 import { observer } from "mobx-react-lite";
 import authStore from "./store/authStore";
 import UsersService from "./services/user.service";
-
 import Sidebar from "./components/Sidebar";
 import Cookies from "js-cookie";
 import { useTheme } from "@mui/material";
@@ -66,6 +65,7 @@ function App() {
                 <Route path=":username">
                   <Route path="" element={<Profile />} />
                   <Route path="journal" element={<Journal />} />
+                  <Route path="lists" element={<ListsPage />} />
                 </Route>
               </Route>
               <Route path="/list/new" element={<CreateListPage />} />

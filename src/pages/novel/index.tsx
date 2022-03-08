@@ -12,7 +12,7 @@ import Stack from "@mui/material/Stack";
 import { Button, InputBase } from "@mui/material";
 import authStore from "../../store/authStore";
 import ReviewService from "../../services/review.service";
-import { Novel, Review } from "../../types/models";
+import { Novel, ReviewModel } from "../../types/models";
 import NovelsService from "../../services/novels.service";
 import ReviewWrapper from "../../components/Review";
 
@@ -20,7 +20,7 @@ const NovelPage: React.FC = () => {
   const [novelData, setNovelData] = React.useState<Novel | null>(null);
   const [inJournal, setInJournal] = React.useState<boolean>(false);
   const [inFavourites, setInFavourites] = React.useState<boolean>(false);
-  const [reviews, setReviews] = React.useState<null | Review[]>(null);
+  const [reviews, setReviews] = React.useState<null | ReviewModel[]>(null);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -161,7 +161,7 @@ const NovelPage: React.FC = () => {
               </form>
             )}
             {reviews &&
-              reviews.map((review: Review, index) => (
+              reviews.map((review: ReviewModel, index) => (
                 <ReviewWrapper key={index} review={review} />
               ))}
           </div>

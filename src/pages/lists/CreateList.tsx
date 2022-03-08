@@ -1,7 +1,7 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Field } from "formik";
 import styles from "../../styles/CreateList.module.scss";
 import React from "react";
-import { Button, Divider, Grid, InputBase, Paper } from "@mui/material";
+import { Button, Divider, InputBase, Paper } from "@mui/material";
 
 interface createListDto {
   name: string;

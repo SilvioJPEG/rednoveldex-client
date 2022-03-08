@@ -10,7 +10,6 @@ const Main: React.FC = () => {
   async function getRecentNovels(amount: number) {
     const recentNovels = (await axios.get(`${API_URL}/novels/recent/${amount}`))
       .data;
-    console.log(recentNovels);
     setRecentNovels(recentNovels);
   }
   React.useEffect(() => {

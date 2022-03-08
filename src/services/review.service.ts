@@ -1,9 +1,12 @@
-import { Review } from "../types/models";
+import { ReviewModel } from "../types/models";
 import { $api } from "./auth.service";
 
 export default class ReviewService {
   static async addReview(novel_id: number, content: string) {
-    const res = await $api.post("/reviews", { novel_id: novel_id, content: content });
+    const res = await $api.post("/reviews", {
+      novel_id: novel_id,
+      content: content,
+    });
     return res;
   }
   static async deleteReview(novel_id: number) {
@@ -17,7 +20,7 @@ export default class ReviewService {
     });
     return res;
   }
-  static async getReviews(novel_id: number): Promise<Review[]> {
+  static async getReviews(novel_id: number): Promise<ReviewModel[]> {
     let amount = 4;
     const res = await $api.get(`/reviews/${novel_id}/${amount}`);
     if (res.status === 200) {
@@ -25,6 +28,13 @@ export default class ReviewService {
     } else {
       return [];
     }
-
+  }
+  static async getReviewsByUser(username: string): Promise<ReviewModel[]> {
+    const res = await $api.get(`/reviews/${username}`);
+    if (res.status === 200) {
+      return res.data;
+    } else {
+      return [];
+    }
   }
 }

@@ -1,8 +1,6 @@
-import { AxiosResponse } from "axios";
 import { AuthResponce } from "../types/auth";
+import axios from "axios";
 
-import axios, { AxiosRequestConfig } from "axios";
-import Cookies from "js-cookie";
 
 const API_URL = "http://localhost:5002";
 

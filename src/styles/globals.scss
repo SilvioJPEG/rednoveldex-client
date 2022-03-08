@@ -146,6 +146,7 @@ ul {
 }
 .review {
   display: flex;
+  padding: 20px 10px;
   column-gap: 30px;
   &__body {
     display: flex;
@@ -157,5 +158,4 @@ ul {
       }
     }
   }
-
 }

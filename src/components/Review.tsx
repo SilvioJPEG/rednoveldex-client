@@ -1,9 +1,9 @@
 import { Avatar } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
-import { Review } from "../types/models";
+import { ReviewModel } from "../types/models";
 type reviewProps = {
-  review: Review;
+  review: ReviewModel;
 };
 const ReviewWrapper: React.FC<reviewProps> = ({ review }) => {
   return (

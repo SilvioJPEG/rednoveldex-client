@@ -15,7 +15,7 @@ export interface novelInfo {
   poster: string;
 }
 
-export type Review = {
+export type ReviewModel = {
   content: string;
   user: UserData;
 };
