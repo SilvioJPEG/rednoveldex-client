@@ -16,11 +16,10 @@ const Main: React.FC = () => {
     getRecentNovels(4);
   }, []);
   return (
-    <article className="contentWrapper">
+    <div className={styles.mainPage}>
       {recentNovels && (
-        <div className={styles.recentlyAdded}>
-          <h2>Recently added to database:</h2>
-          <hr />
+        <section className={styles.recentlyAdded}>
+          <h2 className="sectionHeading">Recently added</h2>
           <div className={styles.recentlyAdded__row}>
             {recentNovels.map((novel) => (
               <div key={novel.id}>
@@ -28,9 +27,13 @@ const Main: React.FC = () => {
               </div>
             ))}
           </div>
-        </div>
+        </section>
       )}
-    </article>
+      <section className={styles.reviewed}>
+        <h2 className="sectionHeading">Just reviewed</h2>
+        <div className={styles.posterList}></div>
+      </section>
+    </div>
   );
 };
 

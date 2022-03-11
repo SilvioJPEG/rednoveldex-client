@@ -19,27 +19,50 @@ const Header: React.FC = () => {
             <img src={logo} alt="logo" />
           </div>
         </Link>
-        {!authStore.loggedInStatus && (
-          <div className={styles.nav}>
-            <span className={styles.navItem}>
-              <Link to="/registration">Create account</Link>
-            </span>
-            or
-            <span className={styles.navItem}>
-              <Link to="/login">Login</Link>
-            </span>
-          </div>
-        )}
         <div className={styles.nav}>
-          {<SearchBar/>}
+          <span className={styles.navItem}>
+            <Link to="/lists">Lists</Link>
+          </span>
+          {!authStore.loggedInStatus && (
+            <>
+              <span className={styles.navItem} style={{ marginLeft: "20px" }}>
+                <Link to="/registration">Create account</Link>
+              </span>
+              or
+              <span className={styles.navItem}>
+                <Link to="/login">Sign in</Link>
+              </span>
+            </>
+          )}
+          {authStore.loggedInStatus && (
+            <>
+              <span className={styles.navItem}>
+                <Link to={`/u/${authStore.user.username}/journal`}>
+                  Journal
+                </Link>
+              </span>
+              <span className={styles.navItem}>
+                <Link to={`/u/${authStore.user.username}`}>Profile</Link>
+              </span>
+              <span
+                className={styles.navItem}
+                onClick={() => authStore.logout()}
+              >
+                Logout
+              </span>
+            </>
+          )}
+        </div>
+        <div className={styles.nav}>
+          {<SearchBar />}
           {authStore.loggedInStatus && (
             <>
               <ButtonGroup>
-                <Button variant="contained" color="success">
+                <Button variant="contained">
                   <Link to="/novel/add">Log</Link>
                 </Button>
-                <Button variant="contained" color="success">
-                  <Link to="/list/new">New list</Link>
+                <Button variant="contained">
+                  <Link to="/lists/new">New list</Link>
                 </Button>
               </ButtonGroup>
             </>

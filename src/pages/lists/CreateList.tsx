@@ -2,26 +2,36 @@ import { Formik, Field } from "formik";
 import styles from "../../styles/CreateList.module.scss";
 import React from "react";
 import { Button, Divider, InputBase, Paper } from "@mui/material";
+import ListsService from "../../services/lists.service";
+import { createListDto } from "../../types/dto";
 
-interface createListDto {
-  name: string;
-  description: string;
-}
+const initialValues: createListDto = {
+  name: "",
+  description: "",
+  tags: [],
+  titles: [],
+};
 const CreateListPage: React.FC = () => {
   const [loading, setLoading] = React.useState<boolean>(false);
+  const searchNovel = () => {};
   return (
-    <article className="contentWrapper">
+    <article>
       <h1>New List</h1>
       <Formik
-        initialValues={{ name: "", description: "" }}
+        initialValues={initialValues}
         validate={(values: createListDto) => {
           const errors: any = {};
           if (!values.name) {
-            errors.name = "Required";
+            errors.username = "Required";
+          }
+          if (!values.titles.length) {
+            errors.titles = "List show have at least one novel";
           }
           return errors;
         }}
-        onSubmit={(values) => {}}
+        onSubmit={(values: createListDto) => {
+          ListsService.create(values);
+        }}
       >
         <form>
           <div className={styles.formWrapper}>
@@ -66,10 +76,10 @@ const CreateListPage: React.FC = () => {
                     borderRadius: "4px",
                     padding: "5px 10px",
                   }}
+                  onChange={() => searchNovel()}
                 />
               </Paper>
             </div>
-
             <Button
               type="submit"
               color="success"

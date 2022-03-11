@@ -18,7 +18,6 @@ import {
 import { observer } from "mobx-react-lite";
 import authStore from "./store/authStore";
 import UsersService from "./services/user.service";
-import Sidebar from "./components/Sidebar";
 import Cookies from "js-cookie";
 import { useTheme } from "@mui/material";
 
@@ -39,41 +38,38 @@ function App() {
   return (
     <div className={"appWrapper " + theme.palette.mode}>
       <Header />
-      <Grid container>
-        <Grid item xs={3}>
-          {authStore.loggedInStatus && <Sidebar />}
-        </Grid>
-        <Grid item xs={6}>
-          <Routes>
-            <Route path="/">
-              <Route index element={<Main />} />
+      <main className="content">
+        <Routes>
+          <Route path="/">
+            <Route index element={<Main />} />
 
-              {!authStore.loggedInStatus ? (
-                <>
-                  <Route path="login" element={<Login />} />
-                  <Route path="registration" element={<Registration />} />
-                </>
-              ) : (
-                <>
-                  <Route path="login" element={<Navigate to="/" />} />
-                  <Route path="registration" element={<Navigate to="/" />} />
-                </>
-              )}
-              <Route path="novel/:id" element={<NovelPage />} />
-              <Route path="novel/add" element={<FindNovelPage />} />
-              <Route path="u">
-                <Route path=":username">
-                  <Route path="" element={<Profile />} />
-                  <Route path="journal" element={<Journal />} />
-                  <Route path="lists" element={<ListsPage />} />
-                </Route>
-              </Route>
-              <Route path="/list/new" element={<CreateListPage />} />
-              <Route path="*" element={<NotFound />} />
+            {!authStore.loggedInStatus ? (
+              <>
+                <Route path="login" element={<Login />} />
+                <Route path="registration" element={<Registration />} />
+              </>
+            ) : (
+              <>
+                <Route path="login" element={<Navigate to="/" />} />
+                <Route path="registration" element={<Navigate to="/" />} />
+              </>
+            )}
+            <Route path="novel/:id" element={<NovelPage />} />
+            <Route path="novel/add" element={<FindNovelPage />} />
+            <Route path="lists">
+              <Route path="" element={<ListsPage />} />
+              <Route path="new" element={<CreateListPage />} />
             </Route>
-          </Routes>
-        </Grid>
-      </Grid>
+            <Route path="u">
+              <Route path=":username">
+                <Route path="" element={<Profile />} />
+                <Route path="journal" element={<Journal />} />
+              </Route>
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </main>
     </div>
   );
 }

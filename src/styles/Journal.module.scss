@@ -1,24 +1,65 @@
-.journalWrapper {
+.journal {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 60px;
-  border: 1px solid var(--text-color);
   background-color: var(--background-color);
   h1 {
     text-align: center;
     margin: 0px;
-    padding: 20px 0;
+    padding: 15px 0;
+    font-size: 16px;
+    font-weight: 700;
     width: 100%;
-    border-bottom: 1px solid var(--text-color);
-  }
-  .journalWrapper__list {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    padding: 20px;
-    column-gap: 10px;
-    row-gap: 10px;
+    border: 1px solid var(--text-color);
+    border-bottom: 0;
   }
 }
 
+.table {
+  display: table;
+  flex-direction: column;
+  width: 100%;
+  border: 1px solid var(--text-color);
+  border-bottom: 0;
+  border-spacing: 0;
+}
+.table__row {
+  display: table-row;
+  border-bottom: 1px solid var(--text-color);
+  .link {
+    &:hover {
+      text-decoration: underline;
+      cursor: pointer;
+      word-wrap: break-word;
+    }
+  }
+  td {
+    border-bottom: 1px solid var(--text-color);
+  }
+}
+.table__row > * {
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  padding: 10px 5px;
+}
+.editForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 30px;
+  .fieldWrapper {
+    label {
+      width: -webkit-fill-available;
+      width: fill-available;
+    }
+    input {
+      width: 100%
+    }
+    width: 70%;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

@@ -1,24 +1,47 @@
 import { Avatar } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
-import { ReviewModel } from "../types/models";
+import NovelsService from "../services/novels.service";
+import { Novel, ReviewModel } from "../types/models";
+import NovelWrapper from "./NovelWrapper";
 type reviewProps = {
   review: ReviewModel;
+  showPoster: boolean;
 };
-const ReviewWrapper: React.FC<reviewProps> = ({ review }) => {
+const ReviewWrapper: React.FC<reviewProps> = ({ review, showPoster }) => {
+  const [novel, setNovel] = React.useState<Novel | null>(null);
+  React.useEffect(() => {
+    if (showPoster) {
+      NovelsService.getNovelData(review.novel_id).then((novelData) => {
+        setNovel(novelData);
+      });
+    }
+  }, []);
   return (
     <div className="review">
-      <div style={{paddingTop:'10px'}}>
-        <Avatar />
-      </div>
+      {showPoster && (
+        <div>
+          <NovelWrapper novel={novel} type={"medium"} />
+        </div>
+      )}
+      {!showPoster && (
+        <div style={{ paddingTop: "10px" }}>
+          <Avatar sx={{ backgroundColor: "var(--text-color)" }} />
+        </div>
+      )}
 
       <div className="review__body">
-        <Link to={`/u/${review.user.username}`}>
-          <div className="reviewer">
-            Reviewed by <b>{review.user.username}</b>
-          </div>
+        <Link className="title" to={`/novel/${novel?.id}`}>
+          {novel?.title}
         </Link>
-        <div className="content">{review.content}</div>
+        {!showPoster && (
+          <Link to={`/u/${review.user.username}`}>
+            <div className="reviewer">
+              Reviewed by <b>{review.user.username}</b>
+            </div>
+          </Link>
+        )}
+        <p>{review.content}</p>
       </div>
     </div>
   );

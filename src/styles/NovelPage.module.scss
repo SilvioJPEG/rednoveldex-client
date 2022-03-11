@@ -27,7 +27,7 @@
   .info {
     padding-bottom: 50px;
   }
-  .reviewsWrapper {
+  .writeReview {
     .form {
       display: flex;
       flex-direction: column;
@@ -65,7 +65,6 @@
   width: 80%;
   padding-top: 130px;
   align-items: center;
-  background-color: var(--background-color);
   border-bottom: 1px solid var(--text-color);
 }
 .addFormWrapper {

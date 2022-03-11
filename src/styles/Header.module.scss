@@ -5,11 +5,12 @@
   z-index: 10;
   color: var(--header-text-color);
   position: sticky;
+  border-bottom: 1px solid #99aabb60;
   top: 0;
   &__content {
     max-width: 950px;
     display: flex;
-    justify-content: space-between;
+    justify-content: space-evenly;
     align-items: center;
     margin: auto;
   }
@@ -23,7 +24,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    column-gap: 10px;
+    column-gap: 20px;
     height: 100%;
     padding: 0 10px;
     font-size: 13px;
@@ -42,4 +43,3 @@
     }
   }
 }
-

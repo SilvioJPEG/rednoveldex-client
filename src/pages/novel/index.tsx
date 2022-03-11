@@ -52,6 +52,10 @@ const NovelPage: React.FC = () => {
     const reviewsData = await ReviewService.getReviews(Number(id));
     setReviews(reviewsData);
   };
+  const setReleaseDate = (ISO_date: string) => {
+    const date = new Date(ISO_date);
+    return date.toLocaleDateString('ru-RU')
+  };
   React.useEffect(() => {
     if (id === undefined) navigate("/");
     getNovelData();
@@ -118,54 +122,58 @@ const NovelPage: React.FC = () => {
             </Stack>
           )}
         </aside>
-        <section className={styles.rightCol}>
-          <div className={styles.info}>
+        <div className={styles.rightCol}>
+          <section className={styles.info}>
             <h1 className={styles.novelName}>{novelData?.title}</h1>
-            <h2>Information:</h2>
             <span>
               <b>Release date: </b>
-              {novelData ? novelData.releaseDate : "-"}
+              {novelData ? setReleaseDate(novelData.release_date) : "-"}
             </span>
             <div className={styles.synopsis}>
               <b>synopsis: </b>
               {novelData !== null ? novelData.description : "-"}
             </div>
-          </div>
-          <div className={styles.reviewsWrapper}>
-            <h2>Recent reviews:</h2>
+          </section>
+          <section className={styles.writeReview}>
             {authStore.loggedInStatus && (
-              <form className={styles.form} onSubmit={formik.handleSubmit}>
-                <InputBase
-                  multiline
-                  minRows={6}
-                  id="content"
-                  type="textarea"
-                  name="content"
-                  autoComplete="off"
-                  value={formik.values.content}
-                  onChange={formik.handleChange}
-                  error={
-                    formik.touched.content && Boolean(formik.errors.content)
-                  }
-                  sx={{
-                    color: "var(--input-text-color)",
-                    backgroundColor: "var(--input-background-color)",
-                    borderBottom: "1px solid var(--input-text-color)",
-                    borderRadius: "4px",
-                    padding: "5px 10px",
-                  }}
-                />
-                <Button type="submit" variant="contained" color="success">
-                  Submit
-                </Button>
-              </form>
+              <>
+                <h2 className="sectionHeading">Write your own review</h2>
+                <form className={styles.form} onSubmit={formik.handleSubmit}>
+                  <InputBase
+                    multiline
+                    minRows={6}
+                    id="content"
+                    type="textarea"
+                    name="content"
+                    autoComplete="off"
+                    value={formik.values.content}
+                    onChange={formik.handleChange}
+                    error={
+                      formik.touched.content && Boolean(formik.errors.content)
+                    }
+                    sx={{
+                      color: "var(--input-text-color)",
+                      backgroundColor: "var(--input-background-color)",
+                      borderBottom: "1px solid var(--input-text-color)",
+                      borderRadius: "4px",
+                      padding: "5px 10px",
+                    }}
+                  />
+                  <Button type="submit" variant="contained" color="success">
+                    Submit
+                  </Button>
+                </form>
+              </>
             )}
+          </section>
+          <section className={styles.reviewsWrapper}>
+            <h2 className="sectionHeading">Recent reviews:</h2>
             {reviews &&
               reviews.map((review: ReviewModel, index) => (
-                <ReviewWrapper key={index} review={review} />
+                <ReviewWrapper key={index} review={review} showPoster={false} />
               ))}
-          </div>
-        </section>
+          </section>
+        </div>
       </div>
     </div>
   );
