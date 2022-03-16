@@ -37,4 +37,12 @@ export default class ReviewService {
       return [];
     }
   }
+  static async getLatestReviews(): Promise<ReviewModel[]> {
+    const res = await $api.get('/reviews');
+    if (res.status === 200) {
+      return res.data;
+    } else {
+      return []
+    }
+  }
 }

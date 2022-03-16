@@ -15,14 +15,58 @@
       align-self: flex-start;
     }
   }
-  .listItems {
-    border: 1px solid var(--text-color);
+}
+.listPreview {
+  border: 1px solid var(--text-color);
+  margin-top: 20px;
+  min-height: 72px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  &__item {
+    padding: 10px 48px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--text-color);
+    .novelInfo {
+      display: flex;
+      font-size: 20px;
+      column-gap: 10px;
+      font-weight: 700;
+    }
+    img {
+      width: 52px;
+    }
+    .clearIcon {
+      &:hover {
+        cursor: pointer;
+      }
+    }
   }
 }
 .searchWrapper {
   display: flex;
   flex-direction: column;
   row-gap: 5px;
+  position: relative;
+  .dropdown__results {
+    position: absolute;
+    background-color: var(--input-background-color);
+    top: 68px;
+    left: 73px;
+    right: 4px;
+    display: flex;
+    flex-direction: column;
+    .result {
+      padding: 5px 10px;
+      &:hover {
+        cursor: pointer;
+        background-color: var(--input-hover-color);
+      }
+    }
+  }
 }
 .listItems {
   margin-top: 30px;

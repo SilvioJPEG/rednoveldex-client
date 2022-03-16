@@ -13,16 +13,12 @@ const Header: React.FC = () => {
   return (
     <header className={styles.headerWrapper}>
       <div className={styles.headerWrapper__content}>
-        {" "}
         <Link to="/">
           <div className={styles.logo}>
             <img src={logo} alt="logo" />
           </div>
         </Link>
         <div className={styles.nav}>
-          <span className={styles.navItem}>
-            <Link to="/lists">Lists</Link>
-          </span>
           {!authStore.loggedInStatus && (
             <>
               <span className={styles.navItem} style={{ marginLeft: "20px" }}>
@@ -36,6 +32,9 @@ const Header: React.FC = () => {
           )}
           {authStore.loggedInStatus && (
             <>
+              <span className={styles.navItem}>
+                <Link to={`u/${authStore.user.username}/lists`}>Lists</Link>
+              </span>
               <span className={styles.navItem}>
                 <Link to={`/u/${authStore.user.username}/journal`}>
                   Journal
@@ -58,11 +57,29 @@ const Header: React.FC = () => {
           {authStore.loggedInStatus && (
             <>
               <ButtonGroup>
-                <Button variant="contained">
-                  <Link to="/novel/add">Log</Link>
+                <Button variant="contained" sx={{ padding: "0" }}>
+                  <Link
+                    to="/novel/add"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      padding: "10px",
+                    }}
+                  >
+                    Log
+                  </Link>
                 </Button>
-                <Button variant="contained">
-                  <Link to="/lists/new">New list</Link>
+                <Button variant="contained" sx={{ padding: "0" }}>
+                  <Link
+                    to="/lists/new"
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      padding: "10px",
+                    }}
+                  >
+                    New list
+                  </Link>
                 </Button>
               </ButtonGroup>
             </>

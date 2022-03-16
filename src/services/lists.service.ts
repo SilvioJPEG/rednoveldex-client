@@ -17,4 +17,9 @@ export default class ListsService {
     const res = await $api.delete("/lists", { data: list_id });
     return res.data;
   }
+
+  static async getByUsername(username: string) {
+    const res = await $api.get(`/lists/${username}`);
+    return res.data;
+  }
 }

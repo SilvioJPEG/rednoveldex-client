@@ -1,0 +1,29 @@
+.review {
+  display: flex;
+  padding: 20px 10px;
+  column-gap: 30px;
+  &__body {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    .title {
+      font-size: larger;
+      font-weight: 600;
+      &:hover {
+        cursor: pointer;
+        color: var(--hover-text-color);
+      }
+    }
+    p {
+      margin: 0;
+    }
+    .reviewer {
+      b:hover {
+        color: var(--hover-text-color);
+      }
+    }
+    .content {
+        text-align: justify;
+    }
+  }
+}

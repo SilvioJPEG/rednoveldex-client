@@ -54,7 +54,7 @@ const NovelPage: React.FC = () => {
   };
   const setReleaseDate = (ISO_date: string) => {
     const date = new Date(ISO_date);
-    return date.toLocaleDateString('ru-RU')
+    return date.toLocaleDateString("ru-RU");
   };
   React.useEffect(() => {
     if (id === undefined) navigate("/");
@@ -125,12 +125,22 @@ const NovelPage: React.FC = () => {
         <div className={styles.rightCol}>
           <section className={styles.info}>
             <h1 className={styles.novelName}>{novelData?.title}</h1>
-            <span>
+            {novelData?.aliases && (
+              <div className={styles.aliases}>
+                <b>Aliases: </b>
+                <div className={styles.col}>
+                  {novelData?.aliases.split("\n").map((str) => (
+                    <span key={str}>{str}</span>
+                  ))}
+                </div>
+              </div>
+            )}
+            <div>
               <b>Release date: </b>
               {novelData ? setReleaseDate(novelData.release_date) : "-"}
-            </span>
+            </div>
             <div className={styles.synopsis}>
-              <b>synopsis: </b>
+              <b>Synopsis: </b>
               {novelData !== null ? novelData.description : "-"}
             </div>
           </section>

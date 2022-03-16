@@ -57,13 +57,13 @@ function App() {
             <Route path="novel/:id" element={<NovelPage />} />
             <Route path="novel/add" element={<FindNovelPage />} />
             <Route path="lists">
-              <Route path="" element={<ListsPage />} />
               <Route path="new" element={<CreateListPage />} />
             </Route>
             <Route path="u">
               <Route path=":username">
                 <Route path="" element={<Profile />} />
                 <Route path="journal" element={<Journal />} />
+                <Route path="lists" element={<ListsPage />} />
               </Route>
             </Route>
             <Route path="*" element={<NotFound />} />

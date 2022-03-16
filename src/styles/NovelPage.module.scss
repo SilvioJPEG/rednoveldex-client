@@ -20,12 +20,27 @@
       box-shadow: inset 0 0 0 1px rgba(221, 238, 255, 0.35);
     }
   }
+  .aliases {
+    display: flex;
+    column-gap: 10px;
+    .col {
+      display: flex;
+      flex-direction: column;
+      font-weight: 400;
+    }
+  }
   .novelName {
     font-size: 32px;
-    margin: 0 0 25px;
+    margin: 0 0 15px;
   }
   .info {
     padding-bottom: 50px;
+    .synopsis {
+      text-align: justify;
+    }
+  }
+  .info > div {
+    margin-bottom: 5px;
   }
   .writeReview {
     .form {

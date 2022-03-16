@@ -1,35 +1,35 @@
 export type Novel = {
+  id?: number;
   title: string;
-  id: number;
   description: string;
   release_date: string;
   image?: string;
+  aliases?: string;
+  orig_lang?: string;
 };
 export type UserData = {
   id: number;
   username: string;
   avatar: string;
   bio: string;
+  journalLength: number;
+  listsAmount: number;
 };
 export interface novelInfo {
   id: number;
   title: string;
-  poster: string;
+  image?: string;
 }
 
 export type ReviewModel = {
   content: string;
-  user: UserData;
-  novel_id: number;
+  User: UserData;
+  Novel: novelInfo;
 };
 export type JournalEntry = {
-  title: string;
-  id: number;
-  description: string;
-  release_date: string;
   score: number;
   status: string;
   started_reading: number;
   finished_reading: number;
-  image?: string;
-}
+  Novel: novelInfo;
+};

@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import { Novel } from "../types/models";
+import { novelInfo } from "../types/models";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { Card, Paper } from "@mui/material";
 type NovelWrapperProps = {
-  novel: Novel | null;
+  novel: novelInfo | null;
   type?: "tiny" | "medium" | "big";
 };
 const NovelWrapper: React.FC<NovelWrapperProps> = ({ novel, type }) => {

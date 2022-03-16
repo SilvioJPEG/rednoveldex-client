@@ -6,8 +6,9 @@
     column-gap: 10px; 
   }
 }
-.posterList {
-  display: flex;
+.reviewsList {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   flex-wrap: wrap;
   column-gap: 10px;
 }

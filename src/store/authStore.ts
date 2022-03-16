@@ -25,7 +25,6 @@ class AuthStore {
         this.setUser(res.data.user);
         this.setAuth(true);
       }
-      console.log(this.user);
       return res.status;
     } catch (e: any) {
       console.log(e.response);

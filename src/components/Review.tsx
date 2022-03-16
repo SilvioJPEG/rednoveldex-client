@@ -1,27 +1,19 @@
 import { Avatar } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
-import NovelsService from "../services/novels.service";
-import { Novel, ReviewModel } from "../types/models";
+import styles from "../styles/ReviewWrapper.module.scss";
+import { ReviewModel } from "../types/models";
 import NovelWrapper from "./NovelWrapper";
 type reviewProps = {
   review: ReviewModel;
   showPoster: boolean;
 };
 const ReviewWrapper: React.FC<reviewProps> = ({ review, showPoster }) => {
-  const [novel, setNovel] = React.useState<Novel | null>(null);
-  React.useEffect(() => {
-    if (showPoster) {
-      NovelsService.getNovelData(review.novel_id).then((novelData) => {
-        setNovel(novelData);
-      });
-    }
-  }, []);
   return (
-    <div className="review">
+    <div className={styles.review}>
       {showPoster && (
         <div>
-          <NovelWrapper novel={novel} type={"medium"} />
+          <NovelWrapper novel={review.Novel} type={"medium"} />
         </div>
       )}
       {!showPoster && (
@@ -30,18 +22,22 @@ const ReviewWrapper: React.FC<reviewProps> = ({ review, showPoster }) => {
         </div>
       )}
 
-      <div className="review__body">
-        <Link className="title" to={`/novel/${novel?.id}`}>
-          {novel?.title}
-        </Link>
-        {!showPoster && (
-          <Link to={`/u/${review.user.username}`}>
-            <div className="reviewer">
-              Reviewed by <b>{review.user.username}</b>
-            </div>
+      <div className={styles.review__body}>
+        {showPoster && (
+          <Link className={styles.title} to={`/novel/${review.Novel.id}`}>
+            {review.Novel.title}
           </Link>
         )}
-        <p>{review.content}</p>
+
+        {!showPoster && (
+          <div className={styles.reviewer}>
+            Reviewed by{" "}
+            <Link to={`/u/${review.User.username}`}>
+              <b>{review.User.username}</b>{" "}
+            </Link>
+          </div>
+        )}
+        <p className={styles.content}>{review.content}</p>
       </div>
     </div>
   );

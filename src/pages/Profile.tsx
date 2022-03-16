@@ -1,13 +1,11 @@
-import { Avatar, Button } from "@mui/material";
+import { Avatar } from "@mui/material";
 import styles from "../styles/Profile.module.scss";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import React from "react";
-import { Novel, ReviewModel, UserData } from "../types/models";
-import FavouritesService from "../services/favourites.service";
+import { novelInfo, ReviewModel, UserData } from "../types/models";
 import NovelWrapper from "../components/NovelWrapper";
-import ReviewsService from "../services/review.service";
 import Review from "../components/Review";
-import UsersService from "../services/user.service";
+import AppService from "../services/app.service";
 
 type ProfileProps = {};
 
@@ -15,23 +13,18 @@ const Profile: React.FC<ProfileProps> = () => {
   const { username } = useParams();
   let navigate = useNavigate();
   const [userData, setUserData] = React.useState<UserData | null>(null);
-  const [favourites, setFavourites] = React.useState<Novel[] | null>(null);
+  const [favourites, setFavourites] = React.useState<novelInfo[] | null>(null);
   const [reviews, setReviews] = React.useState<ReviewModel[] | null>(null);
-  const getUserData = async () => {
+  const getProfileData = async () => {
     if (username) {
-      if (username) {
-        const userData = await UsersService.getUserProfile(username);
-        setUserData(userData);
-        const favouritesRes = await FavouritesService.getAll(username);
-        setFavourites(favouritesRes.data);
-        const reviews = await ReviewsService.getReviewsByUser(username);
-
-        setReviews(reviews);
-      }
+      const data = await AppService.getProfileData(username);
+      setUserData(data);
+      setReviews(data.reviews);
+      setFavourites(data.favourites);
     }
   };
   React.useEffect(() => {
-    getUserData();
+    getProfileData();
   }, []);
   return (
     <div>
@@ -53,13 +46,17 @@ const Profile: React.FC<ProfileProps> = () => {
         <div className={styles.profileStats}>
           <div className={styles.statisticCol}>
             <Link to={`/u/${username}/journal`}>
-              <span className={styles.value}>0</span>
+              <span className={styles.value}>
+                {userData ? userData.journalLength : "0"}
+              </span>
               <span className={styles.definition}>novels</span>
             </Link>
           </div>
           <div className={[styles.statisticCol, styles.statBorder].join(" ")}>
             <Link to={`/u/${username}/lists`}>
-              <span className={styles.value}>0</span>
+              <span className={styles.value}>
+                {userData ? userData.listsAmount : "0"}
+              </span>
               <span className={styles.definition}>lists</span>
             </Link>
           </div>
@@ -70,7 +67,7 @@ const Profile: React.FC<ProfileProps> = () => {
           <h2 className="sectionHeading">favourites</h2>
           <ul className={styles.favouritesList}>
             {favourites
-              ? favourites.map((novel: Novel) => (
+              ? favourites.map((novel: novelInfo) => (
                   <li key={novel.id}>
                     {<NovelWrapper novel={novel} type={"big"} />}
                   </li>

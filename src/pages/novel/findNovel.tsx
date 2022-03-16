@@ -1,7 +1,6 @@
 import { IconButton, InputBase } from "@mui/material";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router";
-import { $api } from "../../services/auth.service";
 import FindInPageIcon from "@mui/icons-material/FindInPage";
 import styles from "../../styles/NovelPage.module.scss";
 import CircularProgress from "@mui/material/CircularProgress";
