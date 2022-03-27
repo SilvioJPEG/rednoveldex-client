@@ -8,11 +8,17 @@ type NovelWrapperProps = {
 };
 const NovelWrapper: React.FC<NovelWrapperProps> = ({ novel, type }) => {
   return novel ? (
-    <div className={"novelWrapper" + " " + (type ?? 'tiny')}>
+    <div className={"novelWrapper" + " " + (type ?? "tiny")}>
       <Link to={`/novel/${novel.id}`} title={novel.title}>
         <img src={novel.image} alt={novel.title} />
-        <div className="frame"></div>
-        <div className="overlay"></div>
+        {type === "big" && (
+          <>
+            <div className="cover">
+              <div className="title">{novel.title}</div>
+            </div>
+            <div className="overlay"></div>
+          </>
+        )}
       </Link>
     </div>
   ) : (

@@ -7,12 +7,14 @@ export default class ReviewService {
       novel_id: novel_id,
       content: content,
     });
-    return res;
+    return res.data;
   }
+
   static async deleteReview(novel_id: number) {
     const res = await $api.delete(`/reviews/${novel_id}`);
     return res;
   }
+
   static async updateReview(novel_id: number, content: string) {
     const res = $api.patch("/reviews", {
       novel_id: novel_id,
@@ -20,6 +22,7 @@ export default class ReviewService {
     });
     return res;
   }
+
   static async getReviews(novel_id: number): Promise<ReviewModel[]> {
     let amount = 4;
     const res = await $api.get(`/reviews/${novel_id}/${amount}`);
@@ -29,6 +32,7 @@ export default class ReviewService {
       return [];
     }
   }
+
   static async getReviewsByUser(username: string): Promise<ReviewModel[]> {
     const res = await $api.get(`/reviews/${username}`);
     if (res.status === 200) {
@@ -37,12 +41,18 @@ export default class ReviewService {
       return [];
     }
   }
+
   static async getLatestReviews(): Promise<ReviewModel[]> {
-    const res = await $api.get('/reviews');
+    const res = await $api.get("/reviews");
     if (res.status === 200) {
       return res.data;
     } else {
-      return []
+      return [];
     }
+  }
+
+  static async checkIfAlready(novel_id: number): Promise<ReviewModel> {
+    const res = await $api.get(`reviews/${novel_id}`);
+    return res.data;
   }
 }

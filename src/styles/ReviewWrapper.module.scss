@@ -6,6 +6,7 @@
     display: flex;
     flex-direction: column;
     row-gap: 10px;
+    width: 100%;
     .title {
       font-size: larger;
       font-weight: 600;
@@ -25,5 +26,13 @@
     .content {
         text-align: justify;
     }
+  }
+}
+
+.editReview {
+  width: 100%;
+  .btnRow {
+    display: flex;
+    justify-content: space-between;
   }
 }

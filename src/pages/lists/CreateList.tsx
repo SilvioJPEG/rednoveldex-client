@@ -1,9 +1,8 @@
 import { Formik, Field } from "formik";
 import styles from "../../styles/CreateList.module.scss";
 import React from "react";
-import { Button, Divider, InputBase, Paper } from "@mui/material";
+import { Button } from "@mui/material";
 import ListsService from "../../services/lists.service";
-import { createListDto } from "../../types/dto";
 import NovelsService from "../../services/novels.service";
 import { novelInfo } from "../../types/models";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -26,8 +25,11 @@ const CreateListPage: React.FC = () => {
     const value = event.currentTarget.value;
     setSearchValue(value);
     if (value.length) {
-      const data = await NovelsService.searchFor(event.currentTarget.value);
-      setSearchResults([...data]);
+      let data = await NovelsService.searchFor(event.currentTarget.value);
+      data = data.filter((novel: novelInfo) => {
+        return !list.some((el: novelInfo) => el.title === novel.title);
+      });
+      setSearchResults(data);
     } else {
       setSearchResults(null);
     }
@@ -68,11 +70,7 @@ const CreateListPage: React.FC = () => {
           ListsService.create(createListDto);
         }}
       >
-        {({
-          handleChange,
-          handleSubmit,
-          /* and other goodies */
-        }) => (
+        {({ handleChange, handleSubmit }) => (
           <form onSubmit={handleSubmit}>
             <div className={styles.formWrapper}>
               <div>
@@ -99,44 +97,22 @@ const CreateListPage: React.FC = () => {
             <div className={styles.formWrapper__footer}>
               <div className={styles.searchWrapper}>
                 <label htmlFor="search">Search for novels to add</label>
-                <Paper
-                  id="search"
-                  sx={{
-                    backgroundColor: "var(--input-background-color)",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <Button color="success">Add</Button>
-                  <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-                  <div className={styles.searchNovel}>
-                    <InputBase
-                      value={searchValue}
-                      sx={{
-                        color: "var(--text-color)",
-                        borderBottom: "1px solid var(--input-text-color)",
-                        borderRadius: "4px",
-                        padding: "5px 10px",
-                      }}
-                      onChange={(e) => onChangeSearch(e)}
-                    />
-                  </div>
-                </Paper>
+
+                <div className={styles.searchNovel}>
+                  <input type="text" onChange={(e) => onChangeSearch(e)} />
+                </div>
+
                 {searchResults && (
                   <div className={styles.dropdown__results}>
-                    {searchResults
-                      .filter((result: novelInfo) => {
-                        return !list.includes(result);
-                      })
-                      .map((result: novelInfo) => (
-                        <span
-                          key={result.id}
-                          onClick={() => addToList(result)}
-                          className={styles.result}
-                        >
-                          {result.title}
-                        </span>
-                      ))}
+                    {searchResults.map((result: novelInfo) => (
+                      <span
+                        key={result.id}
+                        onClick={() => addToList(result)}
+                        className={styles.result}
+                      >
+                        {result.title}
+                      </span>
+                    ))}
                   </div>
                 )}
               </div>
@@ -167,7 +143,7 @@ const CreateListPage: React.FC = () => {
             <span onClick={() => deleteFromList(novel)}>
               <ClearIcon
                 className={styles.clearIcon}
-                sx={{ "&:hover": { color: "orange" } }}
+                sx={{ "&:hover": { color: "red" } }}
               />
             </span>
           </div>

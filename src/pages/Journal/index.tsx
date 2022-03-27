@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router";
 import NovelWrapper from "../../components/NovelWrapper";
-import { JournalEntry } from "../../types/models";
+import { JournalEntry, statusType } from "../../types/models";
 import PendingIcon from "@mui/icons-material/Pending";
 import styles from "../../styles/Journal.module.scss";
 import journalService from "../../services/journal.service";
@@ -10,8 +10,6 @@ import CircularProgress from "@mui/material/CircularProgress";
 import authStore from "../../store/authStore";
 import "react-datepicker/dist/react-datepicker.css";
 import EditPopup from "./Editor";
-
-
 
 function EmptyJournal() {
   return (
@@ -37,9 +35,52 @@ const Journal: React.FC = () => {
   const [journalList, setJournal] = React.useState<JournalEntry[] | null>(null);
   const [editData, setEditData] = React.useState<JournalEntry | null>(null);
   const [editOpen, setEditOpen] = React.useState<boolean>(false);
+  const getStatusStyle = (status: statusType) => {
+    if (status === "plan to read") {
+      return "planToRead";
+    } else {
+      return status;
+    }
+  };
+  const replaceEntity = (newEntity: JournalEntry) => {
+    if (journalList) {
+      let newList = [
+        ...journalList.filter(
+          (el: JournalEntry) => el.Novel.id !== newEntity.Novel.id
+        ),
+        newEntity,
+      ].sort((a, b) => sortByStatus(a, b));
+      setJournal(newList);
+    }
+  };
+  const sortByStatus = (prev: JournalEntry, next: JournalEntry): number => {
+    // novels with "reading" status always go first
+    if (prev.status === "reading" && next.status !== "reading") {
+      return -1;
+    }
+    // novels with "completed" status go second
+    if (
+      prev.status === "completed" &&
+      ["on-hold", "dropped", "plan to read"].includes(next.status)
+    ) {
+      return -1;
+    }
+    if (
+      prev.status === "on-hold" &&
+      ["dropped", "plan to read"].includes(next.status)
+    ) {
+      return -1;
+    }
+    // novels with "plan to read" status always go last
+    if (prev.status !== "plan to read" && next.status === "plan to read") {
+      return -1;
+    }
+    return 0;
+  };
   const getJournalData = async () => {
     if (username) {
-      const journalData = await journalService.getJournalEntities(username);
+      let journalData = await journalService.getJournalEntities(username);
+      journalData.sort((a, b) => sortByStatus(a, b));
       setJournal(journalData);
     }
   };
@@ -64,6 +105,7 @@ const Journal: React.FC = () => {
         <table className={styles.table}>
           <tbody>
             <tr className={styles.table__row}>
+              <td className={styles.status}></td>
               <td>#</td>
               <td>Image</td>
               <td className={styles.title}>Title</td>
@@ -81,16 +123,28 @@ const Journal: React.FC = () => {
                     : {}
                 }
               >
+                <td
+                  className={
+                    styles.status + " " + getStatusStyle(entity.status)
+                  }
+                ></td>
                 <td>{index}</td>
                 <td>
-                  <NovelWrapper key={entity.Novel.id} novel={entity.Novel} type={"tiny"} />
+                  <NovelWrapper
+                    key={entity.Novel.id}
+                    novel={entity.Novel}
+                    type={"tiny"}
+                  />
                 </td>
                 <td className={styles.title}>
-                  <Link className={styles.link} to={`/novel/${entity.Novel.id}`}>
+                  <Link
+                    className={styles.link}
+                    to={`/novel/${entity.Novel.id}`}
+                  >
                     {entity.Novel.title}
                   </Link>
                 </td>
-                <td>{entity.score}</td>
+                <td>{entity.score === 0 ? "-" : entity.score}</td>
                 <td>{entity.status}</td>
                 {username === authStore.user.username && (
                   <td>
@@ -112,11 +166,14 @@ const Journal: React.FC = () => {
       ) : (
         EmptyJournal()
       )}
-      <EditPopup
-        editOpen={editOpen}
-        setEditOpen={setEditOpen}
-        entry={editData}
-      />
+      {editData && (
+        <EditPopup
+          editOpen={editOpen}
+          setEditOpen={setEditOpen}
+          entry={editData}
+          replaceEntity={replaceEntity}
+        />
+      )}
     </div>
   );
 };

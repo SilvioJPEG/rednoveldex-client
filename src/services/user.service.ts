@@ -7,11 +7,11 @@ export default class UsersService {
     const res = await $api.get(`/users/${username}`);
     return res.data;
   }
-  static async getLoggedInProfileData(username: string) {
+  static async getLoggedInData(username: string) {
     try {
       const res = await $api.get(`/users/retrive/${username}`);
       if (res.status === 200) {
-        await authStore.setUser(res.data);
+        authStore.setUser(res.data);
         authStore.setAuth(true);
       }
     } catch (e) {

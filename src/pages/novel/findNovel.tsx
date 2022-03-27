@@ -21,7 +21,13 @@ const FindNovelPage: React.FC = () => {
     initialValues: {
       title: "",
     },
-
+    validate: (values) => {
+      const errors: { title?: string } = {};
+      if (values.title.length === 0) {
+        errors.title = "Required";
+      }
+      return errors;
+    },
     onSubmit: async (values, actions) => {
       if (!loading) {
         setLoading(true);
@@ -29,8 +35,8 @@ const FindNovelPage: React.FC = () => {
         const novels = await NovelsService.findNovelInVNDB(values.title);
         if (novels) {
           setResults(novels);
-          setLoading(false);
         }
+        setLoading(false);
       }
     },
   });
@@ -48,13 +54,21 @@ const FindNovelPage: React.FC = () => {
           value={formik.values.title}
           placeholder={"Add title by finding it on VNDB..."}
           autoComplete="off"
-          sx={{ color: "var(--text-color)", fontSize: "32px", width: "100%" }}
+          sx={{
+            color: "var(--text-color)",
+            fontSize: "32px",
+            width: "100%",
+            boxShadow: "0",
+          }}
         />
         {loading ? (
           <CircularProgress />
         ) : (
           <IconButton type="submit">
-            <FindInPageIcon fontSize="large" />
+            <FindInPageIcon
+              fontSize="large"
+              sx={{ color: "var(--text-color)" }}
+            />
           </IconButton>
         )}
       </form>

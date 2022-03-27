@@ -42,23 +42,14 @@ const SearchBar: React.FC = () => {
       <Paper
         component="form"
         onSubmit={formSubmit}
-        id="searchBar"
-        sx={{
-          p: "2px 4px",
-          borderRadius: "4px",
-          display: "flex",
-          alignItems: "center",
-          width: 200,
-          backgroundColor: "var(--background-color)",
-        }}
-      >
+        id="searchBar">
         <InputBase
           id="search"
           name="search"
           ref={inputRef}
           onChange={onChangeSearch}
           autoComplete="off"
-          sx={{ ml: 1, flex: 1, color: "var(--text-color)" }}
+          sx={{ ml: 1, flex: 1 }}
         />
         <IconButton type="submit">
           <SearchIcon />

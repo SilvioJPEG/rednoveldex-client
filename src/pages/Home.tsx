@@ -40,7 +40,7 @@ const Main: React.FC = () => {
           <h2 className="sectionHeading">Just reviewed</h2>
           <div className={styles.reviewsList}>
             {reviews.map((review: ReviewModel, index) => (
-              <Review key={index} review={review} showPoster={true} />
+              <Review key={index} review={review} />
             ))}
           </div>
         </section>

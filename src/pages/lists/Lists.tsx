@@ -20,7 +20,6 @@ const ListsPage: React.FC = () => {
       <h1>
         Collect, curate, and share. Lists are the perfect way to group novels.
       </h1>
-      <div>{}</div>
     </div>
   );
 };
