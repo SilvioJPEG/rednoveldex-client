@@ -3,7 +3,7 @@ import styles from "../styles/Home.module.scss";
 import NovelWrapper from "../components/NovelWrapper";
 import { novelInfo, ReviewModel } from "../types/models";
 import Review from "../components/Review";
-import AppService from "../services/app.service";
+import AppService from "../api/app.service";
 
 const Main: React.FC = () => {
   const [recentNovels, setRecentNovels] = React.useState<null | novelInfo[]>(

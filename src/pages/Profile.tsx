@@ -6,7 +6,7 @@ import React from "react";
 import { novelInfo, ProfileType, ReviewModel } from "../types/models";
 import NovelWrapper from "../components/NovelWrapper";
 import Review from "../components/Review";
-import AppService from "../services/app.service";
+import AppService from "../api/app.service";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import authStore from "../store/authStore";
@@ -29,6 +29,15 @@ const Profile: React.FC<ProfileProps> = () => {
       setFavourites(data.favourites);
     }
   };
+  function stringToHslColor(str: string, s: number, l: number): string {
+    var hash = 0;
+    for (var i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    var h = hash % 360;
+    return "hsl(" + h + ", " + s + "%, " + l + "%)";
+  }
   const getJoinedDate = (ISO_date: string) => {
     const createdAt = new Date(ISO_date);
     return (
@@ -60,7 +69,7 @@ const Profile: React.FC<ProfileProps> = () => {
                   height: "100px",
                   border: "1px solid var(--text-color)",
                   color: "var(--background-color)",
-                  bgcolor: "var(--text-color)",
+                  bgcolor: stringToHslColor(ProfileData.User.username, 70, 80),
                   fontSize: "40px",
                 }}
               >
@@ -113,7 +122,7 @@ const Profile: React.FC<ProfileProps> = () => {
                   variant="outlined"
                   color="secondary"
                   sx={{ fontSize: "10px", fontWeight: "700" }}
-                  onClick={()=>navigate('/settings')}
+                  onClick={() => navigate("/settings")}
                 >
                   Edit profile
                 </Button>

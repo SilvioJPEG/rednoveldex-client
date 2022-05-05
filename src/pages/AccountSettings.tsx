@@ -1,7 +1,7 @@
 import React from "react";
-import { Field, Form, Formik, FormikProps } from "formik";
+import { Field, Form, Formik } from "formik";
 import { UserData } from "../types/models";
-import PhotoCamera from "@mui/icons-material/PhotoCamera";
+import UploadFileIcon from '@mui/icons-material/UploadFile';
 import Button from "@mui/material/Button";
 
 type ProfileSettingsProps = {

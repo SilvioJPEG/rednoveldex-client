@@ -4,7 +4,7 @@ import NovelWrapper from "../../components/NovelWrapper";
 import { JournalEntry, statusType } from "../../types/models";
 import PendingIcon from "@mui/icons-material/Pending";
 import styles from "../../styles/Journal.module.scss";
-import journalService from "../../services/journal.service";
+import journalService from "../../api/journal.service";
 import { Link } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import authStore from "../../store/authStore";

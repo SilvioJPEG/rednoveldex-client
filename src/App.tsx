@@ -6,7 +6,7 @@ import Header from "./components/Header";
 import * as pages from "./pages";
 import { observer } from "mobx-react-lite";
 import authStore from "./store/authStore";
-import UsersService from "./services/user.service";
+import UsersService from "./api/user.service";
 import Cookies from "js-cookie";
 
 const addBodyClass = (className: string) =>

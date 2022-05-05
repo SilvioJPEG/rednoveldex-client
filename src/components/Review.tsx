@@ -1,4 +1,4 @@
-import { Avatar, Button } from "@mui/material";
+import { Avatar, Button, TextareaAutosize } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import styles from "../styles/ReviewWrapper.module.scss";
@@ -9,7 +9,8 @@ import {
 } from "../types/models";
 import NovelWrapper from "./NovelWrapper";
 import AuthStore from "../store/authStore";
-import Popup from "./Popup";
+import { Formik, Form, Field } from "formik";
+import ReviewService from "../api/review.service";
 
 type reviewProps = {
   review: ReviewModel;
@@ -35,20 +36,26 @@ const ReviewWithPoster = (review: ReviewModelWithNovel) => {
 const ReviewWithUserInfo = (review: ReviewModelWithUser) => {
   const [editing, setEditing] = React.useState<boolean>(false);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [deletePopup, setDeletePopup] = React.useState<boolean>(false);
+
   const showEditButton = () => {
     if (AuthStore.loggedInStatus && AuthStore.user.username) {
       return review.User.username === AuthStore.user.username;
     }
     return false;
   };
+
   const setPostedDate = (ISO_date: string) => {
     const date = new Date(ISO_date);
     return date.toLocaleDateString("ru-RU");
   };
-  const saveReview = () => {
+
+  const deleteReview = async () => {
     setLoading(true);
-  }
+    if (await ReviewService.deleteReview(review.id)) {
+      setLoading(false);
+      setEditing(false);
+    }
+  };
   return (
     <>
       {!editing && (
@@ -93,18 +100,88 @@ const ReviewWithUserInfo = (review: ReviewModelWithUser) => {
       )}
       {editing && (
         <div className={styles.editReview}>
-
-          <div className={styles.btnRow}>
-            <div>
-              <Button variant="contained" color="success" disabled={loading} onClick={()=>saveReview()} sx={{marginRight: '15px'}}>
-                Save
-              </Button>
-              <Button color="secondary" disabled={loading} onClick={() => setEditing(!editing)}>
-                Cancel
-              </Button>
-            </div>
-            <Button variant="outlined" disabled={loading} color="error" >Delete</Button>
-          </div>
+          <Formik
+            initialValues={{ content: review.content }}
+            validate={(values: { content: string }) => {
+              const errors: any = {};
+              if (!values.content) {
+                errors.content = "Required";
+              }
+              return errors;
+            }}
+            onSubmit={async (values) => {
+              setLoading(!loading);
+              const change = {
+                id: review.id,
+                content: values.content,
+              };
+              const updatedReview = await ReviewService.updateReview(change);
+              if (updatedReview) {
+                setLoading(!loading);
+              }
+            }}
+          >
+            <Form className={styles.form}>
+              <Field
+                type="textarea"
+                name="content"
+                render={({
+                  field,
+                  form: { touched, errors },
+                }: {
+                  field: any;
+                  form: { touched: any; errors: any };
+                }) => (
+                  <div>
+                    <TextareaAutosize
+                      {...field}
+                      style={{ width: "100%" }}
+                      minRows={6}
+                    />
+                    {touched[field.name] && errors[field.name] && (
+                      <div
+                        className="error"
+                        style={{
+                          position: "absolute",
+                          color: "var(--accent-color)",
+                        }}
+                      >
+                        {errors[field.name]}
+                      </div>
+                    )}
+                  </div>
+                )}
+              />
+              <div className={styles.btnRow}>
+                <div>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="success"
+                    disabled={loading}
+                    sx={{ marginRight: "15px" }}
+                  >
+                    Save
+                  </Button>
+                  <Button
+                    color="secondary"
+                    disabled={loading}
+                    onClick={() => setEditing(!editing)}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+                <Button
+                  variant="outlined"
+                  onClick={() => deleteReview()}
+                  disabled={loading}
+                  color="error"
+                >
+                  Delete
+                </Button>
+              </div>
+            </Form>
+          </Formik>
         </div>
       )}
     </>

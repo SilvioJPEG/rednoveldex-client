@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import { makeAutoObservable } from "mobx";
-import AuthService from "../services/auth.service";
+import AuthService from "../api/auth.service";
 import { UserData } from "../types/models";
 
 class AuthStore {

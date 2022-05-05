@@ -5,7 +5,7 @@ import FindInPageIcon from "@mui/icons-material/FindInPage";
 import styles from "../../styles/NovelPage.module.scss";
 import CircularProgress from "@mui/material/CircularProgress";
 import React from "react";
-import NovelsService from "../../services/novels.service";
+import NovelsService from "../../api/novels.service";
 
 const FindNovelPage: React.FC = () => {
   let navigate = useNavigate();

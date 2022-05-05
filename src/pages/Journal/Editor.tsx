@@ -4,7 +4,7 @@ import styles from "../../styles/Journal.module.scss";
 import { JournalEntry } from "../../types/models";
 import Button from "@mui/material/Button";
 import authStore from "../../store/authStore";
-import JournalService from "../../services/journal.service";
+import JournalService from "../../api/journal.service";
 import { DatePickerField, SelectField } from "../../components/Fields";
 
 function useOutsideAlerter(

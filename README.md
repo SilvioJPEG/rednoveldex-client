@@ -1,4 +1,18 @@
-# RedNovel
+# vnoveldex
+
+Vnoveldex is letterboxd-like network for visual novel readers.
+It bases on vndb which is the biggest visual novel database to check for novels and retrive basic info about them.
+
+![web interface](./screen.png)
+
+## Tools used
+
+Frontend is build with:
+
+- React
+- Formik
+- MUI
+- Mobx
 
 ## Available Scripts
 
@@ -16,8 +30,3 @@ You will also see any lint errors in the console.
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.

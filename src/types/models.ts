@@ -7,6 +7,7 @@ export type Novel = {
   aliases?: string;
   orig_lang?: string;
 };
+
 export type UserData = {
   username: string;
   avatar: string;
@@ -25,6 +26,7 @@ export type ProfileType = {
   journalLength: number;
   listsAmount: number;
 };
+
 export type novelInfo = {
   id: number;
   title: string;
@@ -32,12 +34,15 @@ export type novelInfo = {
 };
 
 export type ReviewModelWithUser = {
+  id: number;
   content: string;
   User: UserData;
   updatedAt?: string;
+  Novel: novelInfo;
 };
 
 export type ReviewModelWithNovel = {
+  id: number;
   content: string;
   Novel: novelInfo;
   updatedAt?: string;

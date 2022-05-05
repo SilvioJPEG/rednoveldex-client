@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import ListsService from "../../services/lists.service";
+import ListsService from "../../api/lists.service";
 import styles from "../../styles/Lists.module.scss";
 
 const ListsPage: React.FC = () => {

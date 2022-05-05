@@ -1,4 +1,4 @@
-import { useFormik } from "formik";
+import { Formik, Field, Form } from "formik";
 import styles from "../../styles/NovelPage.module.scss";
 import React from "react";
 import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
@@ -6,14 +6,14 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useParams, useNavigate } from "react-router-dom";
-import JournalService from "../../services/journal.service";
-import FavouritesService from "../../services/favourites.service";
+import JournalService from "../../api/journal.service";
+import FavouritesService from "../../api/favourites.service";
 import Stack from "@mui/material/Stack";
-import { Button, InputBase } from "@mui/material";
+import { Button, TextareaAutosize } from "@mui/material";
 import authStore from "../../store/authStore";
-import ReviewService from "../../services/review.service";
+import ReviewService from "../../api/review.service";
 import { Novel, ReviewModel } from "../../types/models";
-import NovelsService from "../../services/novels.service";
+import NovelsService from "../../api/novels.service";
 import ReviewWrapper from "../../components/Review";
 
 const NovelPage: React.FC = () => {
@@ -74,30 +74,7 @@ const NovelPage: React.FC = () => {
       checkIfFavourited();
     }
   }, []);
-  const formik = useFormik({
-    initialValues: {
-      content: "",
-    },
-    validate: (values: { content: string }) => {
-      const errors: any = {};
-      if (!values.content) {
-        errors.content = "Required";
-      }
-      return errors;
-    },
-    onSubmit: async (values) => {
-      if (id) {
-        const uploadedReview = await ReviewService.addReview(
-          Number(id),
-          values.content
-        );
-        if (uploadedReview) {
-          setShowInput(false);
-          setReviews([uploadedReview, ...reviews]);
-        }
-      }
-    },
-  });
+
   return (
     <div className={styles.novelPageWrapper}>
       <aside className={styles.sidebar}>
@@ -162,29 +139,64 @@ const NovelPage: React.FC = () => {
         {authStore.loggedInStatus && showInput && (
           <section className={styles.writeReview}>
             <h2 className="sectionHeading">Write your own review</h2>
-            <form className={styles.form} onSubmit={formik.handleSubmit}>
-              <InputBase
-                multiline
-                minRows={6}
-                id="content"
-                type="textarea"
-                name="content"
-                autoComplete="off"
-                value={formik.values.content}
-                onChange={formik.handleChange}
-                error={formik.touched.content && Boolean(formik.errors.content)}
-                sx={{
-                  color: "var(--input-text-color)",
-                  backgroundColor: "var(--input-background-color)",
-                  borderBottom: "1px solid var(--input-text-color)",
-                  borderRadius: "4px",
-                  padding: "5px 10px",
-                }}
-              />
-              <Button type="submit" variant="contained" color="success">
-                Submit
-              </Button>
-            </form>
+            <Formik
+              initialValues={{ content: "" }}
+              validate={(values: { content: string }) => {
+                const errors: any = {};
+                if (!values.content) {
+                  errors.content = "Required";
+                }
+                return errors;
+              }}
+              onSubmit={async (values) => {
+                if (id) {
+                  const uploadedReview = await ReviewService.addReview(
+                    Number(id),
+                    values.content
+                  );
+                  if (uploadedReview) {
+                    setShowInput(false);
+                    setReviews([uploadedReview, ...reviews]);
+                  }
+                }
+              }}
+            >
+              <Form className={styles.form}>
+                <Field
+                  type="textarea"
+                  name="content"
+                  render={({
+                    field,
+                    form: { touched, errors },
+                  }: {
+                    field: any;
+                    form: { touched: any; errors: any };
+                  }) => (
+                    <div>
+                      <TextareaAutosize
+                        {...field}
+                        style={{ width: "100%" }}
+                        minRows={6}
+                      />
+                      {touched[field.name] && errors[field.name] && (
+                        <div
+                          className="error"
+                          style={{
+                            position: "absolute",
+                            color: "var(--accent-color)",
+                          }}
+                        >
+                          {errors[field.name]}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                />
+                <Button type="submit" variant="contained" color="success">
+                  Submit
+                </Button>
+              </Form>
+            </Formik>
           </section>
         )}
         <section className={styles.reviewsWrapper}>

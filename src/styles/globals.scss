@@ -7,12 +7,12 @@
 }
 
 .light {
-  --backgound-color: #edf1f5;
+  --background-color: #edf1f5;
   --secondary-background-color: #e5ebf1;
-  --input-background-color: #edf1f5;
+  --input-background-color: #ffffff;
   --hover-text-color: #424242;
   --text-color: #26343f;
-  --orange-border: #fc542f;
+  --accent-color: #fc542f;
 }
 .dark {
   --background-color: #14181c;
@@ -21,7 +21,7 @@
   --input-hover-color: #394453;
   --text-color: #99aabb;
   --hover-text-color: #b7c3ce;
-  --orange-border: #ff7455;
+  --accent-color: #ff7455;
 }
 
 html,
@@ -161,7 +161,7 @@ ul {
   max-height: 144px;
   &:hover {
     .overlay {
-      border: 3px solid var(--orange-border);
+      border: 3px solid var(--accent-color);
     }
   }
 }
@@ -170,7 +170,7 @@ ul {
   max-height: 287px;
   &:hover {
     .overlay {
-      border: 3px solid var(--orange-border);
+      border: 3px solid var(--accent-color);
     }
   }
 }

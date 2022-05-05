@@ -43,6 +43,12 @@ const Header: React.FC = () => {
               <span className={styles.navItem}>
                 <Link to={`/u/${authStore.user.username}`}>Profile</Link>
               </span>
+              <span className={styles.navItem}>
+                <Link to={`/novel/add`}>Add new VN</Link>
+              </span>
+              <span className={styles.navItem}>
+                <Link to={`/lists/new`}>Create a list</Link>
+              </span>
               <span
                 className={styles.navItem}
                 onClick={() => authStore.logout()}
@@ -51,39 +57,7 @@ const Header: React.FC = () => {
               </span>
             </>
           )}
-        </div>
-        <div className={styles.nav}>
-          {<SearchBar />}
-          {authStore.loggedInStatus && (
-            <>
-              <ButtonGroup>
-                <Button variant="contained" sx={{ padding: "0" }}>
-                  <Link
-                    to="/novel/add"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      padding: "10px",
-                    }}
-                  >
-                    Log
-                  </Link>
-                </Button>
-                <Button variant="contained" sx={{ padding: "0" }}>
-                  <Link
-                    to="/lists/new"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      padding: "10px",
-                    }}
-                  >
-                    New list
-                  </Link>
-                </Button>
-              </ButtonGroup>
-            </>
-          )}
+          <SearchBar />
         </div>
       </div>
     </header>

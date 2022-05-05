@@ -2,8 +2,8 @@ import { Formik, Field } from "formik";
 import styles from "../../styles/CreateList.module.scss";
 import React from "react";
 import { Button } from "@mui/material";
-import ListsService from "../../services/lists.service";
-import NovelsService from "../../services/novels.service";
+import ListsService from "../../api/lists.service";
+import NovelsService from "../../api/novels.service";
 import { novelInfo } from "../../types/models";
 import ClearIcon from "@mui/icons-material/Clear";
 
