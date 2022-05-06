@@ -31,7 +31,6 @@ function EmptyJournal() {
 
 const Journal: React.FC = () => {
   const { username } = useParams();
-  const [loading, setLoading] = React.useState<boolean>(false);
   const [journalList, setJournal] = React.useState<JournalEntry[] | null>(null);
   const [editData, setEditData] = React.useState<JournalEntry | null>(null);
   const [editOpen, setEditOpen] = React.useState<boolean>(false);
@@ -84,9 +83,11 @@ const Journal: React.FC = () => {
       setJournal(journalData);
     }
   };
+
   React.useEffect(() => {
     getJournalData();
   }, []);
+
   return (
     <div className={styles.journal}>
       <h1>{username}'s journal</h1>

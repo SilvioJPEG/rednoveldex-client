@@ -1,6 +1,6 @@
-# vnoveldex
+# RedNovelDex
 
-Vnoveldex is letterboxd-like network for visual novel readers.
+RedNovelDex is letterboxd-like network for visual novel readers.
 It bases on vndb which is the biggest visual novel database to check for novels and retrive basic info about them.
 
 ![web interface](./screen.png)
