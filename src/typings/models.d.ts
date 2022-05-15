@@ -1,13 +1,3 @@
-export type Novel = {
-  id?: number;
-  title: string;
-  description: string;
-  release_date: string;
-  image?: string;
-  aliases?: string;
-  orig_lang?: string;
-};
-
 export type UserData = {
   username: string;
   avatar: string;
@@ -27,11 +17,19 @@ export type ProfileType = {
   listsAmount: number;
 };
 
-export type novelInfo = {
-  id: number;
+export type BaseNovel = {
+  id?: number;
   title: string;
   image?: string;
+  explicit?: boolean;
 };
+
+export interface Novel extends BaseNovel {
+  description: string;
+  release_date: string;
+  aliases?: string;
+  orig_lang?: string;
+}
 
 export type ReviewModelWithUser = {
   id: number;
@@ -62,4 +60,4 @@ export type statusType =
   | "completed"
   | "on-hold"
   | "dropped"
-  | "plan to read";
+  | "plan-to-read";

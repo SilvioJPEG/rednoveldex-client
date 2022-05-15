@@ -1,12 +1,12 @@
 import React from "react";
 import styles from "../styles/Home.module.scss";
 import NovelWrapper from "../components/NovelWrapper";
-import { novelInfo, ReviewModel } from "../types/models";
+import { BaseNovel, ReviewModel } from "../typings/models";
 import Review from "../components/Review";
 import AppService from "../api/app.service";
 
 const Main: React.FC = () => {
-  const [recentNovels, setRecentNovels] = React.useState<null | novelInfo[]>(
+  const [recentNovels, setRecentNovels] = React.useState<null | BaseNovel[]>(
     null
   );
   const [reviews, setReviews] = React.useState<null | ReviewModel[]>(null);
@@ -23,11 +23,11 @@ const Main: React.FC = () => {
   }, []);
   return (
     <div className={styles.mainPage}>
-      {recentNovels && (
+      {recentNovels?.length && (
         <section className={styles.recentlyAdded}>
           <h2 className="sectionHeading">Recently added</h2>
           <div className={styles.recentlyAdded__row}>
-            {recentNovels.map((novel: novelInfo) => (
+            {recentNovels.map((novel: BaseNovel) => (
               <div key={novel.id}>
                 <NovelWrapper novel={novel} type={"big"} />
               </div>
@@ -35,7 +35,7 @@ const Main: React.FC = () => {
           </div>
         </section>
       )}
-      {reviews && (
+      {reviews?.length && (
         <section className={styles.reviewed}>
           <h2 className="sectionHeading">Just reviewed</h2>
           <div className={styles.reviewsList}>

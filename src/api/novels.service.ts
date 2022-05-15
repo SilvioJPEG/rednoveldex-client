@@ -1,5 +1,5 @@
 import { $api } from "./auth.service";
-import { Novel, novelInfo } from "../types/models";
+import { Novel, BaseNovel } from "../typings/models";
 import novelStore from "../store/novelPageStore";
 
 export default class NovelsService {
@@ -7,8 +7,8 @@ export default class NovelsService {
     const res = await $api.get<Novel>(`/novels/${id}`);
     novelStore.setNovel(res.data);
   }
-  static async searchFor(search: string): Promise<novelInfo[]> {
-    const res = await $api.get<novelInfo[]>(`novels/search/${search}`);
+  static async searchFor(search: string): Promise<BaseNovel[]> {
+    const res = await $api.get<BaseNovel[]>(`novels/search/${search}`);
     return res.data;
   }
 
@@ -22,8 +22,8 @@ export default class NovelsService {
     return res.data;
   }
 
-  static async getRecentNovels(amount: number): Promise<novelInfo[]> {
-    const res = await $api.get<novelInfo[]>(`/novels/recent/${amount}`);
+  static async getRecentNovels(amount: number): Promise<BaseNovel[]> {
+    const res = await $api.get<BaseNovel[]>(`/novels/recent/${amount}`);
     return res.data;
   }
 }

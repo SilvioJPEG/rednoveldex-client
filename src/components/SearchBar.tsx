@@ -2,11 +2,12 @@ import { IconButton, InputBase, Paper } from "@mui/material";
 import React from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import NovelsService from "../api/novels.service";
-import { novelInfo } from "../types/models";
+import { BaseNovel } from "../typings/models";
 import { Link } from "react-router-dom";
+import { Search } from "@mui/icons-material";
 
 const SearchBar: React.FC = () => {
-  const [searchResults, setSearchResults] = React.useState<null | novelInfo[]>(
+  const [searchResults, setSearchResults] = React.useState<null | BaseNovel[]>(
     null
   );
   const [searchValue, setSearchValue] = React.useState<string>("");
@@ -60,9 +61,7 @@ const SearchBar: React.FC = () => {
           autoComplete="off"
           sx={{ ml: 1, flex: 1 }}
         />
-        <IconButton type="submit">
-          <SearchIcon />
-        </IconButton>
+        <SearchIcon sx={{ margin: "5px" }} />
       </Paper>
       {searchResults && (
         <ul className="search__results">

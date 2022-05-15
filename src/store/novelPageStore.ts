@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx";
-import { Novel } from "../types/models";
+import { Novel } from "../typings/models";
 
 class novelStore {
   novel: Novel | null = null;

@@ -1,0 +1,26 @@
+.editForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px;
+  row-gap: 30px;
+}
+.editForm__row {
+  display: flex;
+  column-gap: 40px;
+  row-gap: 40px;
+}
+
+.fieldWrapper {
+  width: 220px;
+  label {
+    width: -webkit-fill-available;
+    width: fill-available;
+  }
+  input {
+    width: 100%;
+  }
+  display: flex;
+  flex-direction: column;
+}
+

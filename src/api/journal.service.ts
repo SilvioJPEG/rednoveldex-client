@@ -1,11 +1,13 @@
 import novelPageStore from "../store/novelPageStore";
-import { JournalEntry } from "../types/models";
+import { JournalEntry } from "../typings/models";
 import { $api } from "./auth.service";
 
 export default class JournalService {
   static async updateJournal(novel_id: number) {
-    const res = await $api.patch(`/journal/update/${novel_id}`);
-    return res;
+    const res = await $api.patch(`/journal/${novel_id}`);
+    if (res.status === 202) {
+      novelPageStore.logged(!novelPageStore.inJournal);
+    }
   }
 
   static async updateJournalEntity(
@@ -13,7 +15,7 @@ export default class JournalService {
     updatedData: any
   ): Promise<JournalEntry> {
     const res = await $api.patch<JournalEntry>(
-      `/journal/update/novel/${novel_id}`,
+      `/journal/entity/${novel_id}`,
       updatedData
     );
     return res.data;
@@ -35,6 +37,6 @@ export default class JournalService {
     const res = await $api.get<JournalEntry[]>(`/journal/${username}`);
     return res.data;
   }
-  
+
   static async changeScore(novel_id: number, newScore: number) {}
 }

@@ -6,7 +6,7 @@ import {
   ReviewModelWithUser,
   ReviewModelWithNovel,
   ReviewModel,
-} from "../types/models";
+} from "../typings/models";
 import NovelWrapper from "./NovelWrapper";
 import AuthStore from "../store/authStore";
 import { Formik, Form, Field } from "formik";

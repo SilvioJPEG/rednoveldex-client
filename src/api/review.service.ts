@@ -1,4 +1,4 @@
-import { ReviewModel } from "../types/models";
+import { ReviewModel } from "../typings/models";
 import { $api } from "./auth.service";
 
 type updatedReview = {

@@ -1,4 +1,4 @@
-import { createListDto } from "../types/dto";
+import { createListDto } from "../typings/dto";
 import { $api } from "./auth.service";
 
 export default class ListsService {

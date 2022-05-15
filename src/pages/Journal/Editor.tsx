@@ -1,7 +1,7 @@
 import React from "react";
-import { Formik, Field } from "formik";
-import styles from "../../styles/Journal.module.scss";
-import { JournalEntry } from "../../types/models";
+import { Formik } from "formik";
+import styles from "../../styles/Editor.module.scss";
+import { JournalEntry } from "../../typings/models";
 import Button from "@mui/material/Button";
 import authStore from "../../store/authStore";
 import JournalService from "../../api/journal.service";
@@ -48,7 +48,7 @@ const statuses = [
   { value: "completed", label: "Completed" },
   { value: "on-hold", label: "On-hold" },
   { value: "dropped", label: "Dropped" },
-  { value: "plan to read", label: "Plan to Read" },
+  { value: "plan-to-read", label: "Plan to Read" },
 ];
 
 const EditPopup: React.FC<EditPopupProps> = ({
@@ -72,13 +72,8 @@ const EditPopup: React.FC<EditPopupProps> = ({
   return (
     <>
       {editOpen && (
-        <div
-          data-testid="overlay"
-          data-popup="modal"
-          className="popup-overlay"
-          tabIndex={-1}
-        >
-          <div className="popup-content" role="dialog" ref={popupRef}>
+        <div className="popup__overlay" tabIndex={-1}>
+          <div className="popup__content" role="dialog" ref={popupRef}>
             <Formik
               initialValues={editInitialValues}
               onSubmit={async (values) => {
@@ -100,38 +95,43 @@ const EditPopup: React.FC<EditPopupProps> = ({
               {({ values, setFieldValue, handleSubmit }) => (
                 <form className={styles.editForm} onSubmit={handleSubmit}>
                   <h2>Editing {entry?.Novel.title}</h2>
-                  <div className={styles.fieldWrapper}>
-                    <label htmlFor="status">Status</label>
-                    <SelectField
-                      options={statuses}
-                      name="status"
-                      defaultValue={values.status}
-                    />
+                  <div className={styles.editForm__row}>
+                    <div className={styles.fieldWrapper}>
+                      <label htmlFor="status">Status</label>
+                      <SelectField
+                        options={statuses}
+                        name="status"
+                        defaultValue={values.status}
+                      />
+                    </div>
+
+                    <div className={styles.fieldWrapper}>
+                      <label htmlFor="score">Score</label>
+                      <SelectField
+                        options={scores}
+                        name="score"
+                        defaultValue={values.score}
+                      />
+                    </div>
                   </div>
 
-                  <div className={styles.fieldWrapper}>
-                    <label htmlFor="score">Score</label>
-                    <SelectField
-                      options={scores}
-                      name="score"
-                      defaultValue={values.score}
-                    />
-                  </div>
-                  <div className={styles.fieldWrapper}>
-                    <label htmlFor="startDate">Started Date</label>
-                    <DatePickerField
-                      name="startDate"
-                      value={values.startDate}
-                      setFieldValue={setFieldValue}
-                    />
-                  </div>
-                  <div className={styles.fieldWrapper}>
-                    <label htmlFor="finishedDate">Finished Date</label>
-                    <DatePickerField
-                      name="finishDate"
-                      value={values.finishDate}
-                      setFieldValue={setFieldValue}
-                    />
+                  <div className={styles.editForm__row}>
+                    <div className={styles.fieldWrapper}>
+                      <label htmlFor="startDate">Started Date</label>
+                      <DatePickerField
+                        name="startDate"
+                        value={values.startDate}
+                        setFieldValue={setFieldValue}
+                      />
+                    </div>
+                    <div className={styles.fieldWrapper}>
+                      <label htmlFor="finishedDate">Finished Date</label>
+                      <DatePickerField
+                        name="finishDate"
+                        value={values.finishDate}
+                        setFieldValue={setFieldValue}
+                      />
+                    </div>
                   </div>
                   <Button type="submit" variant="contained" color="success">
                     Save

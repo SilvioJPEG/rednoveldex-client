@@ -3,7 +3,7 @@ import styles from "../styles/Profile.module.scss";
 import { useParams, Link } from "react-router-dom";
 import { useNavigate } from "react-router";
 import React from "react";
-import { novelInfo, ProfileType, ReviewModel } from "../types/models";
+import { BaseNovel, ProfileType, ReviewModel } from "../typings/models";
 import NovelWrapper from "../components/NovelWrapper";
 import Review from "../components/Review";
 import AppService from "../api/app.service";
@@ -18,7 +18,7 @@ const Profile: React.FC<ProfileProps> = () => {
   const [ProfileData, setProfileData] = React.useState<ProfileType | null>(
     null
   );
-  const [favourites, setFavourites] = React.useState<novelInfo[] | null>(null);
+  const [favourites, setFavourites] = React.useState<BaseNovel[] | null>(null);
   const [reviews, setReviews] = React.useState<ReviewModel[] | null>(null);
   const getProfileData = async () => {
     if (username) {
@@ -136,7 +136,7 @@ const Profile: React.FC<ProfileProps> = () => {
           <h2 className="sectionHeading">favourites</h2>
           <ul className={styles.favouritesList}>
             {favourites
-              ? favourites.map((novel: novelInfo) => (
+              ? favourites.map((novel: BaseNovel) => (
                   <li key={novel.id}>
                     {<NovelWrapper novel={novel} type={"big"} />}
                   </li>

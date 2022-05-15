@@ -3,7 +3,7 @@ import { Formik, Field, Form } from "formik";
 import { Button, TextareaAutosize } from "@mui/material";
 import ReviewWrapper from "../../components/Review";
 import styles from "../../styles/NovelPage.module.scss";
-import { ReviewModel } from "../../types/models";
+import { ReviewModel } from "../../typings/models";
 import ReviewService from "../../api/review.service";
 import authStore from "../../store/authStore";
 

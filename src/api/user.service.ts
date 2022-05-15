@@ -1,5 +1,5 @@
 import authStore from "../store/authStore";
-import { UserData } from "../types/models";
+import { UserData } from "../typings/models";
 import { $api } from "./auth.service";
 
 export default class UsersService {

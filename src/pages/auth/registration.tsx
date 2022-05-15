@@ -1,10 +1,11 @@
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, FormikProps } from "formik";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import styles from "../../styles/Login.module.scss";
 import authStore from "../../store/authStore";
 import { useNavigate } from "react-router";
 import Button from "@mui/material/Button";
+import AuthService from "../../api/auth.service";
 interface createAccountDto {
   username: string;
   password: string;
@@ -13,7 +14,7 @@ interface createAccountDto {
 const Registration: React.FC = () => {
   const [loading, setLoading] = React.useState<boolean>(false);
   const navigate = useNavigate();
-  React.useEffect(() => {}, []);
+
   return (
     <div className={styles.loginWrapper}>
       <Formik
@@ -26,19 +27,23 @@ const Registration: React.FC = () => {
           if (!values.password) {
             errors.password = "Required";
           }
+
           return errors;
         }}
         onSubmit={async (values) => {
           if (authStore.loggedInStatus) return;
           setLoading(true);
-          const status = await authStore.register(
-            values.username,
-            values.password
+          AuthService.registration(values.username, values.password).then(
+            () => {
+              if (authStore.loggedInStatus) {
+                navigate("/", { replace: true });
+              } else {
+                const errors: any = {};
+                errors.password = "Something went wrong, try again";
+              }
+            }
           );
-          if (status === 200 && authStore.loggedInStatus) {
-            setLoading(false);
-            if (!loading) navigate("/");
-          }
+          setLoading(false);
         }}
       >
         <Form className={styles.form}>
@@ -48,7 +53,6 @@ const Registration: React.FC = () => {
           <ErrorMessage name="username" component="div" />
           <label htmlFor="password">Password</label>
           <Field type="password" name="password" />
-          <ErrorMessage name="password" component="div" />
           <Button
             type="submit"
             color="success"

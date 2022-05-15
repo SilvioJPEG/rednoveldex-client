@@ -5,6 +5,7 @@ import { observer } from "mobx-react-lite";
 import authStore from "../../store/authStore";
 import { useNavigate } from "react-router";
 import Button from "@mui/material/Button";
+import AuthService from "../../api/auth.service";
 
 interface valuesInterface {
   username: string;
@@ -31,14 +32,16 @@ const LoginPage: React.FC = observer(() => {
         onSubmit={async (values) => {
           if (authStore.loggedInStatus) return;
           setLoading(true);
-          const status = await authStore.login(
-            values.username,
-            values.password
-          );
-          if (status === 200 && authStore.loggedInStatus) {
+          AuthService.login(values.username, values.password);
+          if (authStore.loggedInStatus) {
             setLoading(false);
+            navigate("/", { replace: true });
+          } else {
+            setLoading(false);
+            const errors: any = {};
+            errors.password = "Wrong username or password";
+            return errors;
           }
-          if (!loading) navigate("/");
         }}
       >
         <Form className={styles.form}>

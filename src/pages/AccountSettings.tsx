@@ -1,6 +1,6 @@
 import React from "react";
 import { Field, Form, Formik } from "formik";
-import { UserData } from "../types/models";
+import { UserData } from "../typings/models";
 import UploadFileIcon from '@mui/icons-material/UploadFile';
 import Button from "@mui/material/Button";
 

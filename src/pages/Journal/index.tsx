@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router";
 import NovelWrapper from "../../components/NovelWrapper";
-import { JournalEntry, statusType } from "../../types/models";
+import { JournalEntry, statusType } from "../../typings/models";
 import PendingIcon from "@mui/icons-material/Pending";
 import styles from "../../styles/Journal.module.scss";
 import journalService from "../../api/journal.service";
@@ -34,13 +34,7 @@ const Journal: React.FC = () => {
   const [journalList, setJournal] = React.useState<JournalEntry[] | null>(null);
   const [editData, setEditData] = React.useState<JournalEntry | null>(null);
   const [editOpen, setEditOpen] = React.useState<boolean>(false);
-  const getStatusStyle = (status: statusType) => {
-    if (status === "plan to read") {
-      return "planToRead";
-    } else {
-      return status;
-    }
-  };
+
   const replaceEntity = (newEntity: JournalEntry) => {
     if (journalList) {
       let newList = [
@@ -66,12 +60,12 @@ const Journal: React.FC = () => {
     }
     if (
       prev.status === "on-hold" &&
-      ["dropped", "plan to read"].includes(next.status)
+      ["dropped", "plan-to-read"].includes(next.status)
     ) {
       return -1;
     }
     // novels with "plan to read" status always go last
-    if (prev.status !== "plan to read" && next.status === "plan to read") {
+    if (prev.status !== "plan-to-read" && next.status === "plan-to-read") {
       return -1;
     }
     return 0;
@@ -124,11 +118,7 @@ const Journal: React.FC = () => {
                     : {}
                 }
               >
-                <td
-                  className={
-                    styles.status + " " + getStatusStyle(entity.status)
-                  }
-                ></td>
+                <td className={styles.status + " " + entity.status}></td>
                 <td>{index}</td>
                 <td>
                   <NovelWrapper

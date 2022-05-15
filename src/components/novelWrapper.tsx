@@ -1,28 +1,48 @@
+import "../styles/novelWrapper.scss";
 import { Link } from "react-router-dom";
-import { novelInfo } from "../types/models";
+import { BaseNovel } from "../typings/models";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
-import { Card, Paper } from "@mui/material";
+import { Paper } from "@mui/material";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+
 type NovelWrapperProps = {
-  novel: novelInfo | null;
+  novel: BaseNovel | null;
   type?: "tiny" | "medium" | "big";
 };
+
+function cx(...args: string[]): string {
+  return args.join(" ");
+}
+
 const NovelWrapper: React.FC<NovelWrapperProps> = ({ novel, type }) => {
-  return novel ? (
-    <div className={"novelWrapper" + " " + (type ?? "tiny")}>
-      <Link to={`/novel/${novel.id}`} title={novel.title}>
-        <img src={novel.image} alt={novel.title} />
-        {type === "big" && (
-          <>
-            <div className="cover">
-              <div className="title">{novel.title}</div>
-            </div>
-            <div className="overlay"></div>
-          </>
+  return novel?.image ? (
+    <>
+      <div
+        className={cx(
+          "novelWrapper",
+          "novelWrapper_" + type ?? "tiny",
+          novel.explicit ? "novelWrapper_blurred" : ""
         )}
-      </Link>
-    </div>
+      >
+        <Link to={`/novel/${novel.id}`} title={novel.title}>
+          <img src={novel.image} alt={novel.title} />
+          {type === "big" && (
+            <>
+              <div className="novelWrapper__overlay">
+                <div className="title">{novel.title}</div>
+              </div>
+            </>
+          )}
+        </Link>
+        {type === "big" && (
+          <div className="novelWrapper__journalBtn">
+            <AddCircleOutlineOutlinedIcon />
+          </div>
+        )}
+      </div>
+    </>
   ) : (
-    <div className={"novelWrapper" + " " + type}>
+    <div className={cx("novelWrapper", "novelWrapper_" + type ?? "tiny")}>
       <Paper>
         <AddCircleIcon />
       </Paper>

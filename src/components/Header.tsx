@@ -1,11 +1,8 @@
-import { Avatar, ButtonGroup, ListItemIcon } from "@mui/material";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import styles from "../styles/Header.module.scss";
 import logo from "../assets/rednovel.png";
 import { Link } from "react-router-dom";
 import { observer } from "mobx-react-lite";
 import authStore from "../store/authStore";
-import Button from "@mui/material/Button";
 import React from "react";
 import SearchBar from "./SearchBar";
 

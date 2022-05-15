@@ -4,7 +4,7 @@ import React from "react";
 import { Button } from "@mui/material";
 import ListsService from "../../api/lists.service";
 import NovelsService from "../../api/novels.service";
-import { novelInfo } from "../../types/models";
+import { BaseNovel } from "../../typings/models";
 import ClearIcon from "@mui/icons-material/Clear";
 
 const initialValues = {
@@ -13,11 +13,11 @@ const initialValues = {
 };
 const CreateListPage: React.FC = () => {
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [searchResults, setSearchResults] = React.useState<null | novelInfo[]>(
+  const [searchResults, setSearchResults] = React.useState<null | BaseNovel[]>(
     null
   );
   const [searchValue, setSearchValue] = React.useState<string>("");
-  const [list, setList] = React.useState<novelInfo[]>([]);
+  const [list, setList] = React.useState<BaseNovel[]>([]);
 
   const onChangeSearch = async (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -26,8 +26,8 @@ const CreateListPage: React.FC = () => {
     setSearchValue(value);
     if (value.length) {
       let data = await NovelsService.searchFor(event.currentTarget.value);
-      data = data.filter((novel: novelInfo) => {
-        return !list.some((el: novelInfo) => el.title === novel.title);
+      data = data.filter((novel: BaseNovel) => {
+        return !list.some((el: BaseNovel) => el.title === novel.title);
       });
       setSearchResults(data);
     } else {
@@ -35,16 +35,16 @@ const CreateListPage: React.FC = () => {
     }
   };
 
-  const addToList = (novel: novelInfo) => {
-    if (!list.some((el: novelInfo) => el.id === novel.id)) {
+  const addToList = (novel: BaseNovel) => {
+    if (!list.some((el: BaseNovel) => el.id === novel.id)) {
       setList([...list, novel]);
     }
     setSearchValue("");
     setSearchResults(null);
   };
 
-  const deleteFromList = (novel: novelInfo) => {
-    setList(list.filter((item: novelInfo) => item !== novel));
+  const deleteFromList = (novel: BaseNovel) => {
+    setList(list.filter((item: BaseNovel) => item !== novel));
   };
   return (
     <article>
@@ -59,13 +59,15 @@ const CreateListPage: React.FC = () => {
           return errors;
         }}
         onSubmit={(values) => {
-          const ids = list.map((title: novelInfo) => {
-            return title.id;
+          let ids = list.map((novel) => novel.id);
+          let definedIds: number[] = [];
+          ids.forEach((id) => {
+            if (id !== undefined) definedIds.push(id);
           });
           const createListDto = {
             name: values.name,
             description: values.description,
-            novels: ids,
+            novels: definedIds,
           };
           ListsService.create(createListDto);
         }}
@@ -104,7 +106,7 @@ const CreateListPage: React.FC = () => {
 
                 {searchResults && (
                   <div className={styles.dropdown__results}>
-                    {searchResults.map((result: novelInfo) => (
+                    {searchResults.map((result: BaseNovel) => (
                       <span
                         key={result.id}
                         onClick={() => addToList(result)}
@@ -129,7 +131,7 @@ const CreateListPage: React.FC = () => {
         )}
       </Formik>
       <div className={styles.listPreview}>
-        {list.map((novel: novelInfo, index) => (
+        {list.map((novel: BaseNovel, index) => (
           <div
             key={novel.id}
             className={styles.listPreview__item}

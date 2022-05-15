@@ -1,14 +1,14 @@
 $header-height: 90px;
-
+header {
+  margin-bottom: 60px;
+}
 .headerWrapper {
   background-color: var(--header-color);
   width: 100%;
   height: $header-height;
   z-index: 10;
   color: var(--header-text-color);
-  position: sticky;
-  border-bottom: 1px solid #99aabb60;
-  top: 0;
+  border-bottom: 1px solid var(--header-text-color);
   &__content {
     max-width: 950px;
     display: flex;

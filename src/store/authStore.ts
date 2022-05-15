@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import { makeAutoObservable } from "mobx";
 import AuthService from "../api/auth.service";
-import { UserData } from "../types/models";
+import { UserData } from "../typings/models";
 
 class AuthStore {
   user: UserData = {} as UserData;
@@ -18,18 +18,9 @@ class AuthStore {
     this.user = user;
   }
 
-  async login(username: string, password: string): Promise<number> {
-    try {
-      const res = await AuthService.login(username, password);
-      if (res.status === 200) {
-        this.setUser(res.data.user);
-        this.setAuth(true);
-      }
-      return res.status;
-    } catch (e: any) {
-      console.log(e.response);
-      return 400;
-    }
+  async login(user: UserData) {
+    this.setUser(user);
+    this.setAuth(true);
   }
 
   async logout() {
@@ -44,19 +35,6 @@ class AuthStore {
     }
   }
 
-  async register(
-    username: string,
-    password: string
-  ): Promise<number | undefined> {
-    try {
-      const res = await AuthService.registration(username, password);
-      this.setUser(res.data.user);
-      this.setAuth(true);
-      return res.status;
-    } catch (e: any) {
-      return e.response.data.message;
-    }
-  }
 }
 
 export default new AuthStore();

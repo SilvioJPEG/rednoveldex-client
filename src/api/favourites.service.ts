@@ -1,5 +1,5 @@
 import novelPageStore from "../store/novelPageStore";
-import { Novel } from "../types/models";
+import { Novel } from "../typings/models";
 import { $api } from "./auth.service";
 
 export default class FavouritesService {
