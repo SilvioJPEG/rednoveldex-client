@@ -1,16 +1,16 @@
 import React from "react";
 import { useParams } from "react-router";
-import NovelWrapper from "../../components/NovelWrapper";
-import { JournalEntry, statusType } from "../../typings/models";
+import NovelWrapper from "../components/NovelWrapper";
+import { JournalEntry } from "../typings/models";
 import PendingIcon from "@mui/icons-material/Pending";
-import styles from "../../styles/Journal.module.scss";
-import journalService from "../../api/journal.service";
+import styles from "../styles/Journal.module.scss";
+import journalService from "../api/journal.service";
 import { Link } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
-import authStore from "../../store/authStore";
+import authStore from "../store/authStore";
 import "react-datepicker/dist/react-datepicker.css";
-import EditPopup from "./Editor";
-
+import EditPopup from "../components/Editor";
+import editorStore from "../store/editorStore";
 function EmptyJournal() {
   return (
     <div
@@ -32,9 +32,6 @@ function EmptyJournal() {
 const Journal: React.FC = () => {
   const { username } = useParams();
   const [journalList, setJournal] = React.useState<JournalEntry[] | null>(null);
-  const [editData, setEditData] = React.useState<JournalEntry | null>(null);
-  const [editOpen, setEditOpen] = React.useState<boolean>(false);
-
   const replaceEntity = (newEntity: JournalEntry) => {
     if (journalList) {
       let newList = [
@@ -142,8 +139,7 @@ const Journal: React.FC = () => {
                     <span
                       className={styles.link}
                       onClick={() => {
-                        setEditOpen(!editOpen);
-                        setEditData(entity);
+                        editorStore.openEditor({ entity, type: "edit" });
                       }}
                     >
                       Edit
@@ -157,14 +153,7 @@ const Journal: React.FC = () => {
       ) : (
         EmptyJournal()
       )}
-      {editData && (
-        <EditPopup
-          editOpen={editOpen}
-          setEditOpen={setEditOpen}
-          entry={editData}
-          replaceEntity={replaceEntity}
-        />
-      )}
+      <EditPopup replaceEntity={replaceEntity} />
     </div>
   );
 };

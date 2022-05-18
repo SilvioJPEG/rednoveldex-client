@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 type FooterProps = {
   replaceThemeTo: (theme: "dark" | "light") => void;
 };
@@ -25,6 +27,11 @@ const Footer: React.FC<FooterProps> = (props) => {
             А
           </button>
         </div>
+      </div>
+      <div className="nav">
+        <span className="navItem">
+          <Link to="/about">About</Link>
+        </span>
       </div>
     </footer>
   );

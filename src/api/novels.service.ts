@@ -5,15 +5,19 @@ import novelStore from "../store/novelPageStore";
 export default class NovelsService {
   static async getNovelData(id: number) {
     const res = await $api.get<Novel>(`/novels/${id}`);
-    novelStore.setNovel(res.data);
+    if (Object.keys(res.data).length !== 0) {
+      novelStore.setNovel(res.data);
+    } else {
+      novelStore.setEmpty();
+    }
   }
   static async searchFor(search: string): Promise<BaseNovel[]> {
-    const res = await $api.get<BaseNovel[]>(`novels/search/${search}`);
+    const res = await $api.get<BaseNovel[]>(`/novels/search/${search}`);
     return res.data;
   }
 
   static async findNovelInVNDB(title: string): Promise<string[]> {
-    const res = await $api.post<string[]>(`/novels/find/${title}`);
+    const res = await $api.post<string[]>(`/novels/${title}`);
     return res.data;
   }
 

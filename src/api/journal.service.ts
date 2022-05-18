@@ -3,11 +3,13 @@ import { JournalEntry } from "../typings/models";
 import { $api } from "./auth.service";
 
 export default class JournalService {
-  static async updateJournal(novel_id: number) {
-    const res = await $api.patch(`/journal/${novel_id}`);
-    if (res.status === 202) {
-      novelPageStore.logged(!novelPageStore.inJournal);
-    }
+  static async addToJournal(novel_id: number) {
+    const res = await $api.post<JournalEntry>(`journal/entity/${novel_id}`);
+    novelPageStore.journaled(true, res.data);
+  }
+
+  static async deleteFromJournal(novel_id: number) {
+    await $api.delete(`/entity/${novel_id}`);
   }
 
   static async updateJournalEntity(
@@ -27,9 +29,7 @@ export default class JournalService {
       novelEntry: JournalEntry;
     }>("/journal/check", { novel_id: novel_id });
     if (res.status === 200) {
-      novelPageStore.logged(res.data.InJournal);
-    } else {
-      novelPageStore.logged(res.data.InJournal);
+      novelPageStore.journaled(res.data.InJournal, res.data.novelEntry);
     }
   }
 
@@ -38,5 +38,14 @@ export default class JournalService {
     return res.data;
   }
 
+  static async getJournalEntity(
+    username: string,
+    novel_id: number
+  ): Promise<JournalEntry> {
+    const res = await $api.get<JournalEntry>(
+      `/journal/${username}/novel/${novel_id}`
+    );
+    return res.data;
+  }
   static async changeScore(novel_id: number, newScore: number) {}
 }

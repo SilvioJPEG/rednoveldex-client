@@ -7,7 +7,6 @@ import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useParams, useNavigate } from "react-router-dom";
 import JournalService from "../../api/journal.service";
 import FavouritesService from "../../api/favourites.service";
-import Stack from "@mui/material/Stack";
 import authStore from "../../store/authStore";
 import NovelsService from "../../api/novels.service";
 import novelStore from "../../store/novelPageStore";
@@ -15,8 +14,16 @@ import ReviewsSection from "./ReviewsSection";
 import { observer } from "mobx-react-lite";
 import HeartBrokenIcon from "@mui/icons-material/HeartBroken";
 import { Bar } from "react-chartjs-2";
+import Editor from "../../components/Editor";
+import editorStore from "../../store/editorStore";
+import { JournalEntry } from "../../typings/models";
+import CircularProgress from "@mui/material/CircularProgress";
 
-const SidebarInfo = (id: string | undefined) => {
+type SidebarInfoProps = {
+  id: number;
+};
+
+const SidebarInfo: React.FC<SidebarInfoProps> = observer(({ id }) => {
   return (
     <aside className={styles.sidebar}>
       <div className={styles.posterWrapper}>
@@ -30,15 +37,39 @@ const SidebarInfo = (id: string | undefined) => {
         <div className={styles.actionsList}>
           <button
             className={styles.action}
-            onClick={() => JournalService.updateJournal(Number(id))}
+            onClick={async () => {
+              if (novelStore.inJournal && novelStore.novel) {
+                editorStore.openEditor({
+                  entity: novelStore.inJournal,
+                  type: "edit",
+                });
+              }
+              if (novelStore.novel && !novelStore.inJournal) {
+                JournalService.addToJournal(id);
+              }
+              /*
+                            if (novelStore.novel && !novelStore.inJournal) {
+                editorStore.openEditor({
+                  entity: novelStore.novel,
+                  type: "add",
+                });
+              }
+              */
+            }}
           >
             {novelStore.inJournal ? (
               <>
-                <span>remove</span>
-                <BookmarkIcon titleAccess="remove from Journal" />
+                <span>{novelStore.inJournal.status}</span>
+                <BookmarkIcon
+                  className={novelStore.inJournal.status + "-icon"}
+                  titleAccess="remove from Journal"
+                />
               </>
             ) : (
-              <BookmarkBorderIcon titleAccess="add to Journal" />
+              <>
+                <span>add to journal</span>
+                <BookmarkBorderIcon titleAccess="add to Journal" />
+              </>
             )}
           </button>
           <button
@@ -62,9 +93,9 @@ const SidebarInfo = (id: string | undefined) => {
       )}
     </aside>
   );
-};
+});
 
-const Description = () => {
+const Description = observer(() => {
   const setReleaseDate = (ISO_date: string) => {
     const date = new Date(ISO_date);
     return date.toLocaleDateString("ru-RU");
@@ -92,35 +123,46 @@ const Description = () => {
       </div>
     </section>
   );
-};
+});
 
 const NovelPage: React.FC = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-
+  const [loading, setLoading] = React.useState<boolean>(true);
   React.useEffect(() => {
     async function getPageData() {
       if (id === undefined) navigate("/");
       await NovelsService.getNovelData(Number(id));
+      if (novelStore.novel === null) navigate("404");
       if (authStore.loggedInStatus) {
         await JournalService.checkIfInJournal(Number(id));
         await FavouritesService.checkIfFavourited(Number(id));
       }
+      setLoading(false);
     }
     getPageData();
     return () => {
       novelStore.setEmpty();
     };
   }, [id, navigate]);
-
+  const update = (data: JournalEntry) => {
+    novelStore.journaled(true, data);
+  };
   return (
-    <div className={styles.novelPageWrapper}>
-      {SidebarInfo(id)}
-      <div className={styles.rightCol}>
-        <Description />
-        {id && <ReviewsSection id={Number(id)} />}
-      </div>
-    </div>
+    <>
+      {loading ? (
+        <CircularProgress />
+      ) : (
+        <div className={styles.novelPageWrapper}>
+          <SidebarInfo id={Number(id)} />
+          <div className={styles.rightCol}>
+            <Description />
+            {id && <ReviewsSection id={Number(id)} />}
+          </div>
+          <Editor replaceEntity={update} />
+        </div>
+      )}
+    </>
   );
 };
 

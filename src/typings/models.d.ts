@@ -18,7 +18,7 @@ export type ProfileType = {
 };
 
 export type BaseNovel = {
-  id?: number;
+  id: number;
   title: string;
   image?: string;
   explicit?: boolean;
@@ -36,13 +36,13 @@ export type ReviewModelWithUser = {
   content: string;
   User: UserData;
   updatedAt?: string;
-  Novel: novelInfo;
+  Novel: BaseNovel;
 };
 
 export type ReviewModelWithNovel = {
   id: number;
   content: string;
-  Novel: novelInfo;
+  Novel: BaseNovel;
   updatedAt?: string;
 };
 export type ReviewModel = ReviewModelWithNovel | ReviewModelWithUser;
@@ -52,9 +52,22 @@ export type JournalEntry = {
   status: statusType;
   started_reading?: number;
   finished_reading?: number;
-  Novel: novelInfo;
+  Novel: BaseNovel;
   comments: string;
 };
+
+export interface EditorEntity extends EditorEntityValues {
+  Novel: BaseNovel;
+}
+
+export type EditorEntityValues = {
+  score: number | null;
+  status: statusType | null;
+  startDate: Date | null;
+  finishDate: Date | null;
+  comments: string | null;
+};
+
 export type statusType =
   | "reading"
   | "completed"

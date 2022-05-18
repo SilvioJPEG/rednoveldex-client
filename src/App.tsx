@@ -124,9 +124,9 @@ function App() {
                 <Route path="lists" element={<pages.UsersLists />} />
               </Route>
             </Route>
-            <Route path="about" element={<pages.About />} />
-            <Route path="*" element={<pages.NotFound />} />
           </Route>
+          <Route path="about" element={<pages.About />} />
+          <Route path="*" element={<pages.NotFound />} />
         </Routes>
       </main>
       <Footer replaceThemeTo={replaceThemeTo} />

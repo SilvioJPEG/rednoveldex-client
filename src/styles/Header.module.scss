@@ -22,26 +22,5 @@ header {
       height: inherit;
     }
   }
-  .nav {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    column-gap: 20px;
-    height: 100%;
-    padding: 0 10px;
-    font-size: 13px;
-    .navItem {
-      text-transform: uppercase;
-      font-weight: 700;
-      letter-spacing: 1px;
-      transition: transform 0.07s ease-in-out;
-      &:hover {
-        color: #ffffff;
-        cursor: pointer;
-      }
-      &:active {
-        transform: translateY(2px);
-      }
-    }
-  }
+
 }

@@ -1,9 +1,9 @@
 import { makeAutoObservable } from "mobx";
-import { Novel } from "../typings/models";
+import { JournalEntry, Novel } from "../typings/models";
 
 class novelStore {
   novel: Novel | null = null;
-  inJournal: boolean = false;
+  inJournal: JournalEntry | null = null;
   inFavourites: boolean = false;
 
   constructor() {
@@ -12,18 +12,22 @@ class novelStore {
 
   setEmpty() {
     this.novel = null;
-    this.inJournal = false;
+    this.inJournal = null;
     this.inFavourites = false;
   }
 
-  logged(status: boolean) {
-    this.inJournal = status;
+  journaled(InJournal: boolean, novelEntry: JournalEntry) {
+    if (InJournal) {
+      this.inJournal = novelEntry;
+    } else {
+      this.inJournal = null;
+    }
   }
 
   favourited(status: boolean) {
     this.inFavourites = status;
   }
-  
+
   setNovel(novelData: Novel) {
     this.novel = novelData;
   }

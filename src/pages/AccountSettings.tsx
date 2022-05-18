@@ -1,7 +1,6 @@
 import React from "react";
 import { Field, Form, Formik } from "formik";
 import { UserData } from "../typings/models";
-import UploadFileIcon from '@mui/icons-material/UploadFile';
 import Button from "@mui/material/Button";
 
 type ProfileSettingsProps = {
@@ -39,9 +38,14 @@ const Settings: React.FC<ProfileSettingsProps> = ({ user }) => {
                 Save
               </Button>
             </h2>
-
-            <Field type="textarea" name="locartion" />
-            <Field type="text" name="bio" component={InputWithLength}></Field>
+            <div className="fieldWrapper">
+              <label htmlFor="location">Location</label>
+              <Field type="textarea" name="location" />
+            </div>
+            <div className="fieldWrapper">
+              <label htmlFor="bio">Bio</label>
+              <Field type="text" name="bio" component={InputWithLength}></Field>
+            </div>
           </Form>
         )}
       </Formik>

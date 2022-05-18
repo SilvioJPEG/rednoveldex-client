@@ -23,7 +23,7 @@ const Main: React.FC = () => {
   }, []);
   return (
     <div className={styles.mainPage}>
-      {recentNovels?.length && (
+      {recentNovels?.length !== 0 && recentNovels && (
         <section className={styles.recentlyAdded}>
           <h2 className="sectionHeading">Recently added</h2>
           <div className={styles.recentlyAdded__row}>
@@ -35,7 +35,7 @@ const Main: React.FC = () => {
           </div>
         </section>
       )}
-      {reviews?.length && (
+      {reviews?.length !== 0 && reviews && (
         <section className={styles.reviewed}>
           <h2 className="sectionHeading">Just reviewed</h2>
           <div className={styles.reviewsList}>

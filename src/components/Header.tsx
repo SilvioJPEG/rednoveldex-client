@@ -15,41 +15,38 @@ const Header: React.FC = () => {
             <img src={logo} alt="logo" />
           </div>
         </Link>
-        <div className={styles.nav}>
+        <div className="nav">
           {!authStore.loggedInStatus && (
             <>
-              <span className={styles.navItem} style={{ marginLeft: "20px" }}>
+              <span className="navItem" style={{ marginLeft: "20px" }}>
                 <Link to="/registration">Create account</Link>
               </span>
               or
-              <span className={styles.navItem}>
+              <span className="navItem">
                 <Link to="/login">Sign in</Link>
               </span>
             </>
           )}
           {authStore.loggedInStatus && (
             <>
-              <span className={styles.navItem}>
+              <span className="navItem">
                 <Link to={`u/${authStore.user.username}/lists`}>Lists</Link>
               </span>
-              <span className={styles.navItem}>
+              <span className="navItem">
                 <Link to={`/u/${authStore.user.username}/journal`}>
                   Journal
                 </Link>
               </span>
-              <span className={styles.navItem}>
+              <span className="navItem">
                 <Link to={`/u/${authStore.user.username}`}>Profile</Link>
               </span>
-              <span className={styles.navItem}>
+              <span className="navItem">
                 <Link to={`/novel/add`}>Add new VN</Link>
               </span>
-              <span className={styles.navItem}>
+              <span className="navItem">
                 <Link to={`/lists/new`}>Create a list</Link>
               </span>
-              <span
-                className={styles.navItem}
-                onClick={() => authStore.logout()}
-              >
+              <span className="navItem" onClick={() => authStore.logout()}>
                 Logout
               </span>
             </>
