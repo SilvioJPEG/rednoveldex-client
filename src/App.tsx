@@ -117,7 +117,7 @@ function App() {
             />
             <Route path="novel/:id" element={<pages.NovelInfo />} />
             <Route path="novel/add" element={<pages.FindNovel />} />
-            <Route path="u">
+            <Route path="user">
               <Route path=":username">
                 <Route path="" element={<pages.Profile />} />
                 <Route path="journal" element={<pages.Journal />} />

@@ -1,36 +1,40 @@
-.profileHeader {
+.profileHeader__content {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  position: relative;
   padding: 0 45px;
-  height: 200px;
-  .avatarWrapper {
+  :first-child {
     display: flex;
-    align-items: center;
     column-gap: 15px;
-    margin-right: 30px;
+    align-items: center;
   }
 }
-.usernameWrapper {
+
+.profileHeader__content__info {
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   align-items: flex-start;
   row-gap: 5px;
   #username {
-    font-weight: 600;
     font-size: 22px;
   }
 }
-.profileLinks {
+
+.stats {
   display: flex;
-  .statisticCol > * {
+  align-items: center;
+  .stats__col:last-child {
+    border-right: 0;
+  }
+  .stats__col {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding-right: 15px;
     margin: 10px 20px 10px 0;
     border-right: 1px solid #667788;
+    height: min-content;
+    user-select: none;
     .value {
       font-family: Georgia, "Times New Roman", Times, serif;
       font-weight: 600;
@@ -44,12 +48,12 @@
     }
     &:hover {
       .definition {
-        color: #29a2e7;
+        color: var(--hover-text-color);
       }
     }
   }
 }
-.profileStatsWrapper {
+.profileHeader__stats {
   width: 100%;
 }
 .profileStats {
@@ -72,4 +76,29 @@
   display: flex;
   align-items: center;
   column-gap: 5px;
+}
+
+.profileHeader__navMenu {
+  width: 100%;
+  background-color: var(--secondary-background-color);
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  height: 60px;
+  margin: 40px 0;
+  & > * {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s;
+    border-right: 1px solid var(--third-background-color);
+    &:hover {
+      color: var(--hover-text-color);
+    }
+    &:last-child {
+      border-right: 0;
+    }
+  }
 }

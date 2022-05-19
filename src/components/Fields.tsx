@@ -42,7 +42,7 @@ export const SelectField: React.FC<SelectProps> = ({
   name,
   defaultValue,
 }) => {
-  const [field, meta, helpers] = useField(name); // can pass 'props' into useField also, if 'props' contains a name attribute
+  const [, , helpers] = useField(name); // can pass 'props' into useField also, if 'props' contains a name attribute
   const { setValue, setTouched, setError } = helpers;
 
   const setFieldProps = (selectedOption: { value: any }) => {
@@ -60,8 +60,8 @@ export const SelectField: React.FC<SelectProps> = ({
         colors: {
           ...theme.colors,
           primary25: "var(--input-hover-color)",
-          primary: "var(--orange-border)",
-          neutral0: "var(--input-background-color)",
+          primary: "var(--accent-color)",
+          neutral0: "var(--third-background-color)",
           primary50: "var(--input-hover-color)",
           neutral80: "var(--text-color)",
         },

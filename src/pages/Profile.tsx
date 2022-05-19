@@ -1,34 +1,24 @@
+import React from "react";
 import { Avatar, Button } from "@mui/material";
 import styles from "../styles/Profile.module.scss";
 import { useParams, Link } from "react-router-dom";
 import { useNavigate } from "react-router";
-import React from "react";
-import { BaseNovel, ProfileType, ReviewModel } from "../typings/models";
+import { BaseNovel } from "../typings/models";
 import NovelWrapper from "../components/NovelWrapper";
 import Review from "../components/Review";
 import AppService from "../api/app.service";
+import profileStore from "../store/proflePageStore";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import authStore from "../store/authStore";
+import { observer } from "mobx-react-lite";
 
-type ProfileProps = {};
-const Profile: React.FC<ProfileProps> = () => {
-  const { username } = useParams();
+type ProfileHeaderProps = {
+  username: string | undefined;
+};
+
+const ProfileHeader: React.FC<ProfileHeaderProps> = observer(({ username }) => {
   let navigate = useNavigate();
-  const [ProfileData, setProfileData] = React.useState<ProfileType | null>(
-    null
-  );
-  const [favourites, setFavourites] = React.useState<BaseNovel[] | null>(null);
-  const [reviews, setReviews] = React.useState<ReviewModel[] | null>(null);
-  const getProfileData = async () => {
-    if (username) {
-      const data = await AppService.getProfileData(username);
-      const { reviews, favourites, ...ProfileData } = data;
-      setProfileData(ProfileData);
-      setReviews(data.reviews);
-      setFavourites(data.favourites);
-    }
-  };
   function stringToHslColor(str: string, s: number, l: number): string {
     var hash = 0;
     for (var i = 0; i < str.length; i++) {
@@ -46,99 +36,138 @@ const Profile: React.FC<ProfileProps> = () => {
       createdAt.getFullYear()
     );
   };
-  React.useEffect(() => {
-    getProfileData();
-  }, []);
+  const getClassSelectedLink = (
+    type: "overview" | "journal" | "lists"
+  ): string | undefined => {
+    if (profileStore.body === type) {
+      return "link_selected";
+    }
+  };
   return (
-    <div>
-      {ProfileData && ProfileData.User.headerPhoto && (
-        <div className={styles.profileHeader__photo}>
-          <img
-            src={ProfileData.User.headerPhoto}
-            alt={ProfileData.User.username + "`s header photo"}
-          />
-        </div>
-      )}
-      <div className={styles.profileHeader}>
-        {ProfileData && (
-          <>
-            <div className={styles.avatarWrapper}>
+    <div className={styles.profileHeader}>
+      {profileStore.User && (
+        <>
+          {profileStore.User.headerCover && profileStore.User.headerCover && (
+            <div className={styles.profileHeader__cover}>
+              <img
+                src={profileStore.User.headerCover}
+                alt={profileStore.User.username + "`s header cover"}
+              />
+            </div>
+          )}
+          <div className={styles.profileHeader__content}>
+            <div>
               <Avatar
                 sx={{
                   width: "100px",
                   height: "100px",
                   border: "1px solid var(--text-color)",
                   color: "var(--background-color)",
-                  bgcolor: stringToHslColor(ProfileData.User.username, 70, 80),
+                  bgcolor: stringToHslColor(profileStore.User.username, 70, 80),
                   fontSize: "40px",
                 }}
+                variant="square"
               >
-                {ProfileData.User.username[0].toUpperCase()}
+                {profileStore.User.username[0].toUpperCase()}
               </Avatar>
-            </div>
-            <div className={styles.profileStatsWrapper}>
-              <div className={styles.profileStats}>
-                <div className={styles.usernameWrapper}>
-                  <span id={styles.username}>{ProfileData?.User.username}</span>
-                  <div>
-                    {ProfileData.User.location && (
-                      <span>
-                        <LocationOnIcon />
-                        {ProfileData.User.location}
-                      </span>
-                    )}
-                    {ProfileData.User.createdAt && (
-                      <span id={styles.joinedDate} title="created date">
-                        <CalendarMonthIcon />
-                        {getJoinedDate(ProfileData.User.createdAt)}
-                      </span>
-                    )}
-                  </div>
-                </div>
-                <div className={styles.profileLinks}>
-                  <div className={styles.statisticCol}>
-                    <Link to={`/u/${username}/journal`}>
-                      <span className={styles.value}>
-                        {ProfileData ? ProfileData.journalLength : ""}
-                      </span>
-                      <span className={styles.definition}>novels</span>
-                    </Link>
-                  </div>
-                  <div className={styles.statisticCol}>
-                    <Link
-                      to={`/u/${username}/lists`}
-                      style={{ borderRight: 0 }}
-                    >
-                      <span className={styles.value}>
-                        {ProfileData ? ProfileData.listsAmount : ""}
-                      </span>
-                      <span className={styles.definition}>lists</span>
-                    </Link>
-                  </div>
-                </div>
+              <div className={styles.profileHeader__content__info}>
+                <span id={styles.username}>{profileStore.User?.username}</span>
+                {profileStore.User.location && (
+                  <span>
+                    <LocationOnIcon />
+                    {profileStore.User.location}
+                  </span>
+                )}
+                {profileStore.User.createdAt && (
+                  <span id={styles.joinedDate} title="created date">
+                    <CalendarMonthIcon />
+                    {getJoinedDate(profileStore.User.createdAt)}
+                  </span>
+                )}
+                {authStore.user.username === username && (
+                  <Button
+                    variant="outlined"
+                    color="secondary"
+                    sx={{ fontSize: "10px", fontWeight: "700" }}
+                    onClick={() => navigate("/settings")}
+                  >
+                    Edit profile
+                  </Button>
+                )}
               </div>
-              {authStore.user.username === username && (
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  sx={{ fontSize: "10px", fontWeight: "700" }}
-                  onClick={() => navigate("/settings")}
-                >
-                  Edit profile
-                </Button>
-              )}
             </div>
-          </>
-        )}
-      </div>
+            <div className={styles.stats}>
+              <div className={styles.stats__col}>
+                <span className={styles.value}>
+                  {profileStore.journalLength ?? ""}
+                </span>
+                <span className={styles.definition}>Total novels</span>
+              </div>
+              <div className={styles.stats__col}>
+                <span className={styles.value}>
+                  {profileStore.listsAmount ?? ""}
+                </span>
+                <span className={styles.definition}>lists</span>
+              </div>
+            </div>
+          </div>
+          <div className={styles.profileHeader__navMenu}>
+            <Link
+              to={`/user/${username}`}
+              className={getClassSelectedLink("overview")}
+            >
+              Overview
+            </Link>
+            <Link
+              to={`/user/${username}/journal`}
+              className={getClassSelectedLink("journal")}
+            >
+              Journal
+            </Link>
+            <Link
+              to={`/user/${username}/lists`}
+              className={getClassSelectedLink("lists")}
+            >
+              Lists
+            </Link>
+            <Link to={`/user/lists/new`}>Create new list</Link>
+          </div>
+        </>
+      )}
+    </div>
+  );
+});
+
+type ProfileProps = {};
+const Profile: React.FC<ProfileProps> = () => {
+  const { username } = useParams();
+  const getProfileData = async () => {
+    if (username) {
+      const data = await AppService.getProfileData(username);
+      profileStore.setProfile(data);
+    }
+  };
+
+  React.useEffect(() => {
+    getProfileData();
+  }, []);
+  return (
+    <>
+      <ProfileHeader username={username} />
       <div className={styles.profileBody}>
         <section id={styles.favourites}>
           <h2 className="sectionHeading">favourites</h2>
           <ul className={styles.favouritesList}>
-            {favourites
-              ? favourites.map((novel: BaseNovel) => (
+            {profileStore.favourites
+              ? profileStore.favourites.map((novel: BaseNovel) => (
                   <li key={novel.id}>
-                    {<NovelWrapper novel={novel} type={"big"} />}
+                    {
+                      <NovelWrapper
+                        novel={novel}
+                        type={"big"}
+                        addBtnShowing={false}
+                      />
+                    }
                   </li>
                 ))
               : "-"}
@@ -146,14 +175,14 @@ const Profile: React.FC<ProfileProps> = () => {
         </section>
         <section id={styles.lists}>
           <h2 className="sectionHeading">recent reviews</h2>
-          {reviews
-            ? reviews.map((review, index) => (
+          {profileStore.reviews
+            ? profileStore.reviews.map((review, index) => (
                 <Review key={index} review={review} />
               ))
             : "-"}
         </section>
       </div>
-    </div>
+    </>
   );
 };
-export default Profile;
+export default observer(Profile);

@@ -4,17 +4,19 @@ export type UserData = {
   id: number;
 };
 
-export type ProfileType = {
-  User: {
-    username: string;
-    avatar: string;
-    location: string;
-    bio: string;
-    createdAt: string;
-    headerPhoto: string;
-  };
+export interface UserFull extends UserData {
+  location: string;
+  bio: string;
+  createdAt: string;
+  headerCover: string;
+}
+
+export type Profile = {
+  User: UserFull;
   journalLength: number;
   listsAmount: number;
+  reviews: ReviewModel[];
+  favourites: BaseNovel[];
 };
 
 export type BaseNovel = {

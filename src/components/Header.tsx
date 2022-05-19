@@ -30,29 +30,26 @@ const Header: React.FC = () => {
           {authStore.loggedInStatus && (
             <>
               <span className="navItem">
-                <Link to={`u/${authStore.user.username}/lists`}>Lists</Link>
+                <Link to={`/user/${authStore.user.username}`}>Profile</Link>
               </span>
               <span className="navItem">
-                <Link to={`/u/${authStore.user.username}/journal`}>
+                <Link to={`/user/${authStore.user.username}/journal`}>
                   Journal
                 </Link>
               </span>
               <span className="navItem">
-                <Link to={`/u/${authStore.user.username}`}>Profile</Link>
+                <Link to={`user/${authStore.user.username}/lists`}>Lists</Link>
               </span>
               <span className="navItem">
                 <Link to={`/novel/add`}>Add new VN</Link>
-              </span>
-              <span className="navItem">
-                <Link to={`/lists/new`}>Create a list</Link>
               </span>
               <span className="navItem" onClick={() => authStore.logout()}>
                 Logout
               </span>
             </>
           )}
-          <SearchBar />
         </div>
+        <SearchBar />
       </div>
     </header>
   );

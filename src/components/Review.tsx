@@ -20,7 +20,11 @@ const ReviewWithPoster = (review: ReviewModelWithNovel) => {
   return (
     <>
       <div style={{ alignSelf: "flex-start", marginTop: "15px" }}>
-        <NovelWrapper novel={review.Novel} type={"medium"} />
+        <NovelWrapper
+          novel={review.Novel}
+          type={"medium"}
+          addBtnShowing={false}
+        />
       </div>
 
       <div className={styles.review__body}>
@@ -61,7 +65,7 @@ const ReviewWithUserInfo = (review: ReviewModelWithUser) => {
       {!editing && (
         <>
           <div style={{ paddingTop: "10px" }}>
-            <Link to={`/u/${review.User.username}`}>
+            <Link to={`/user/${review.User.username}`}>
               <Avatar sx={{ backgroundColor: "var(--text-color)" }} />
             </Link>
           </div>
@@ -75,7 +79,7 @@ const ReviewWithUserInfo = (review: ReviewModelWithUser) => {
             >
               <div className={styles.reviewer}>
                 Reviewed by{" "}
-                <Link to={`/u/${review.User.username}`}>
+                <Link to={`/user/${review.User.username}`}>
                   <b>{review.User.username}</b>
                 </Link>
               </div>

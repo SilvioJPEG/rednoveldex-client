@@ -8,13 +8,18 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 type NovelWrapperProps = {
   novel: BaseNovel | null;
   type?: "tiny" | "medium" | "big";
+  addBtnShowing: boolean;
 };
 
 function cx(...args: string[]): string {
   return args.join(" ");
 }
 
-const NovelWrapper: React.FC<NovelWrapperProps> = ({ novel, type }) => {
+const NovelWrapper: React.FC<NovelWrapperProps> = ({
+  novel,
+  type,
+  addBtnShowing,
+}) => {
   return novel?.image ? (
     <>
       <div
@@ -34,7 +39,7 @@ const NovelWrapper: React.FC<NovelWrapperProps> = ({ novel, type }) => {
             </>
           )}
         </Link>
-        {type === "big" && (
+        {type === "big" && addBtnShowing && (
           <div className="novelWrapper__journalBtn">
             <AddCircleOutlineOutlinedIcon />
           </div>

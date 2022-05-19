@@ -29,7 +29,7 @@ const Main: React.FC = () => {
           <div className={styles.recentlyAdded__row}>
             {recentNovels.map((novel: BaseNovel) => (
               <div key={novel.id}>
-                <NovelWrapper novel={novel} type={"big"} />
+                <NovelWrapper novel={novel} type={"big"} addBtnShowing={true} />
               </div>
             ))}
           </div>

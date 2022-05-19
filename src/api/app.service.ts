@@ -1,8 +1,9 @@
+import { Profile } from "../typings/models";
 import { $api } from "./auth.service";
 
 export default class AppService {
   static async getProfileData(username: string) {
-    const res = await $api.get(`/api/profile/${username}`);
+    const res = await $api.get<Profile>(`/api/profile/${username}`);
     return res.data;
   }
 

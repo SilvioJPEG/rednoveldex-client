@@ -34,15 +34,17 @@ const Journal: React.FC = () => {
   const [journalList, setJournal] = React.useState<JournalEntry[] | null>(null);
   const replaceEntity = (newEntity: JournalEntry) => {
     if (journalList) {
-      let newList = [
-        ...journalList.filter(
-          (el: JournalEntry) => el.Novel.id !== newEntity.Novel.id
-        ),
-        newEntity,
-      ].sort((a, b) => sortByStatus(a, b));
-      setJournal(newList);
+      let replaceIndex = journalList.findIndex(
+        (el: JournalEntry) => el.Novel.id === newEntity.Novel.id
+      );
+      if (replaceIndex !== -1) {
+        let newList = [...journalList];
+        newList[replaceIndex] = newEntity;
+        setJournal(newList);
+      }
     }
   };
+
   const sortByStatus = (prev: JournalEntry, next: JournalEntry): number => {
     // novels with "reading" status always go first
     if (prev.status === "reading" && next.status !== "reading") {
@@ -70,6 +72,7 @@ const Journal: React.FC = () => {
   const getJournalData = async () => {
     if (username) {
       let journalData = await journalService.getJournalEntities(username);
+      journalData.sort((a, b) => a.Novel.title.localeCompare(b.Novel.title));
       journalData.sort((a, b) => sortByStatus(a, b));
       setJournal(journalData);
     }
@@ -122,6 +125,7 @@ const Journal: React.FC = () => {
                     key={entity.Novel.id}
                     novel={entity.Novel}
                     type={"tiny"}
+                    addBtnShowing={false}
                   />
                 </td>
                 <td className={styles.title}>
