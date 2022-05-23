@@ -5,7 +5,7 @@ class novelStore {
   novel: Novel | null = null;
   inJournal: JournalEntry | null = null;
   inFavourites: boolean = false;
-
+  averageScore: number | null = null;
   constructor() {
     makeAutoObservable(this);
   }
@@ -14,6 +14,7 @@ class novelStore {
     this.novel = null;
     this.inJournal = null;
     this.inFavourites = false;
+    this.averageScore = null;
   }
 
   journaled(InJournal: boolean, novelEntry: JournalEntry) {
@@ -30,6 +31,10 @@ class novelStore {
 
   setNovel(novelData: Novel) {
     this.novel = novelData;
+  }
+
+  setAverageScore(score: number) {
+    this.averageScore = score;
   }
 }
 

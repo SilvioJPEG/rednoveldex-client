@@ -12,8 +12,6 @@ import NovelsService from "../../api/novels.service";
 import novelStore from "../../store/novelPageStore";
 import ReviewsSection from "./ReviewsSection";
 import { observer } from "mobx-react-lite";
-import HeartBrokenIcon from "@mui/icons-material/HeartBroken";
-import { Bar } from "react-chartjs-2";
 import Editor from "../../components/Editor";
 import editorStore from "../../store/editorStore";
 import { JournalEntry } from "../../typings/models";
@@ -149,7 +147,7 @@ const NovelPage: React.FC = () => {
     novelStore.journaled(true, data);
   };
   return (
-    <>
+    <div className="container">
       {loading ? (
         <CircularProgress />
       ) : (
@@ -162,7 +160,7 @@ const NovelPage: React.FC = () => {
           <Editor replaceEntity={update} />
         </div>
       )}
-    </>
+    </div>
   );
 };
 

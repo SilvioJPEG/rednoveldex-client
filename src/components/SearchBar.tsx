@@ -73,6 +73,7 @@ const SearchBar: React.FC = () => {
               }}
             >
               <Link to={`/novel/${novel.id}`}>
+                <img src={novel.image} alt={novel.title} />
                 <span>{novel.title}</span>
               </Link>
             </li>

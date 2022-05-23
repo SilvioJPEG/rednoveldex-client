@@ -1,11 +1,12 @@
-export { default as Profile } from "./Profile";
-export { default as Journal } from "./Journal";
+export { default as Profile } from "./Profile/";
+export { default as ProfileHome } from "./Profile/Home";
+export { default as Journal } from "./Profile/Journal";
 export { default as NotFound } from "./404";
 export { default as Main } from "./Home";
 export { default as NovelInfo } from "./Novel/SingleNovel";
 export { default as Login } from "./auth/Login";
 export { default as Registration } from "./auth/Registration";
-export { default as UsersLists } from "./lists/Lists";
+export { default as UsersLists } from "./Profile/Lists";
 export { default as CreateList } from "./lists/CreateList";
 export { default as FindNovel } from "./Novel/findNovel";
 export { default as Settings } from "./AccountSettings";

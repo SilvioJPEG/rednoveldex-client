@@ -1,7 +1,7 @@
 import React from "react";
 import { Field, Form, Formik } from "formik";
 import { UserData } from "../typings/models";
-import Button from "@mui/material/Button";
+import "../styles/Settings.scss";
 
 type ProfileSettingsProps = {
   user: UserData;
@@ -20,7 +20,7 @@ const InputWithLength = ({ field, values, ...props }: InputProps) => {
 };
 const Settings: React.FC<ProfileSettingsProps> = ({ user }) => {
   return (
-    <section>
+    <section className="container">
       <Formik
         initialValues={{ location: "", bio: "" }}
         onSubmit={(values, actions) => {
@@ -31,12 +31,10 @@ const Settings: React.FC<ProfileSettingsProps> = ({ user }) => {
         }}
       >
         {({ values }) => (
-          <Form>
-            <h2 className="accountHeader sectionHeading">
+          <Form className="settings">
+            <h2 className="settings__header sectionHeading">
               <span>Settings</span>
-              <Button type="submit" variant="contained">
-                Save
-              </Button>
+              <button type="submit">Save</button>
             </h2>
             <div className="fieldWrapper">
               <label htmlFor="location">Location</label>

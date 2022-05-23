@@ -14,7 +14,8 @@ type ReviewsSectionProps = {
 const ReviewsSection: React.FC<ReviewsSectionProps> = ({ id }) => {
   const [reviews, setReviews] = React.useState<ReviewModel[]>([]);
   const [showInput, setShowInput] = React.useState<boolean>(false);
-
+  const [reviewFormOpened, setReviewFormOpened] =
+    React.useState<boolean>(false);
   React.useEffect(() => {
     const getReviews = async () => {
       if (authStore.loggedInStatus) {
@@ -38,13 +39,6 @@ const ReviewsSection: React.FC<ReviewsSectionProps> = ({ id }) => {
           <h2 className="sectionHeading">Write your own review</h2>
           <Formik
             initialValues={{ content: "" }}
-            validate={(values: { content: string }) => {
-              const errors: any = {};
-              if (!values.content) {
-                errors.content = "Required";
-              }
-              return errors;
-            }}
             onSubmit={async (values) => {
               const uploadedReview = await ReviewService.addReview(
                 id,
@@ -67,9 +61,15 @@ const ReviewsSection: React.FC<ReviewsSectionProps> = ({ id }) => {
                 }) => (
                   <div>
                     <TextareaAutosize
+                      onClick={() => {
+                        if (!reviewFormOpened) {
+                          setReviewFormOpened(true);
+                        }
+                      }}
                       {...field}
                       style={{ width: "100%" }}
-                      minRows={6}
+                      minRows={2}
+                      placeholder={"Write your review here..."}
                     />
                     {touched[field.name] && errors[field.name] && (
                       <div
@@ -85,9 +85,22 @@ const ReviewsSection: React.FC<ReviewsSectionProps> = ({ id }) => {
                   </div>
                 )}
               </Field>
-              <Button type="submit" variant="contained" color="success">
-                Submit
-              </Button>
+              {reviewFormOpened && (
+                <div className={styles.btnsRow}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => {
+                      setReviewFormOpened(false);
+                    }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button type="submit" variant="contained" color="success">
+                    Submit
+                  </Button>
+                </div>
+              )}
             </Form>
           </Formik>
         </section>

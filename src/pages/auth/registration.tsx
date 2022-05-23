@@ -1,4 +1,4 @@
-import { Formik, Form, Field, ErrorMessage, FormikProps } from "formik";
+import { Formik, Form, Field, ErrorMessage } from "formik";
 import { observer } from "mobx-react-lite";
 import React from "react";
 import styles from "../../styles/Login.module.scss";
@@ -14,7 +14,6 @@ interface createAccountDto {
 const Registration: React.FC = () => {
   const [loading, setLoading] = React.useState<boolean>(false);
   const navigate = useNavigate();
-
   return (
     <div className={styles.loginWrapper}>
       <Formik
@@ -47,12 +46,16 @@ const Registration: React.FC = () => {
         }}
       >
         <Form className={styles.form}>
-          <div>Join novelboxd</div>
-          <label htmlFor="username">Username</label>
-          <Field type="text" name="username" />
-          <ErrorMessage name="username" component="div" />
-          <label htmlFor="password">Password</label>
-          <Field type="password" name="password" />
+          <h2>Registration</h2>
+          <div>
+            <Field type="text" name="username" placeholder="Username" />
+            <ErrorMessage name="username" component="div" />
+          </div>
+          <div>
+            <Field type="password" name="password" placeholder="Password" />
+            <ErrorMessage name="password" component="div" />
+          </div>
+
           <Button
             type="submit"
             color="success"

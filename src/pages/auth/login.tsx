@@ -45,12 +45,16 @@ const LoginPage: React.FC = observer(() => {
         }}
       >
         <Form className={styles.form}>
-          <label htmlFor="username">Username</label>
-          <Field type="text" name="username" />
-          <ErrorMessage name="username" component="div" />
-          <label htmlFor="password">Password</label>
-          <Field type="password" name="password" />
-          <ErrorMessage name="password" component="div" />
+          <h2>Login</h2>
+          <div>
+            <Field type="text" name="username" placeholder="Username" />
+            <ErrorMessage name="username" component="div" />
+          </div>
+          <div>
+            <Field type="password" name="password" placeholder="Password" />
+            <ErrorMessage name="password" component="div" />
+          </div>
+
           <Button
             type="submit"
             color="success"

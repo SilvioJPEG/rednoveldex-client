@@ -1,16 +1,17 @@
 import React from "react";
 import { useParams } from "react-router";
-import NovelWrapper from "../components/NovelWrapper";
-import { JournalEntry } from "../typings/models";
+import NovelWrapper from "../../components/NovelWrapper";
+import { JournalEntry } from "../../typings/models";
 import PendingIcon from "@mui/icons-material/Pending";
-import styles from "../styles/Journal.module.scss";
-import journalService from "../api/journal.service";
+import styles from "../../styles/Journal.module.scss";
+import journalService from "../../api/journal.service";
 import { Link } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
-import authStore from "../store/authStore";
+import authStore from "../../store/authStore";
 import "react-datepicker/dist/react-datepicker.css";
-import EditPopup from "../components/Editor";
-import editorStore from "../store/editorStore";
+import EditPopup from "../../components/Editor";
+import editorStore from "../../store/editorStore";
+import profileStore from "../../store/profilePageStore";
 function EmptyJournal() {
   return (
     <div
@@ -80,11 +81,11 @@ const Journal: React.FC = () => {
 
   React.useEffect(() => {
     getJournalData();
+    profileStore.setBody("journal");
   }, []);
 
   return (
     <div className={styles.journal}>
-      <h1>{username}'s journal</h1>
       {journalList === null ? (
         <div
           className={styles.table}

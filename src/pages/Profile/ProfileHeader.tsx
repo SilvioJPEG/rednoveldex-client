@@ -1,23 +1,18 @@
-import React from "react";
 import { Avatar, Button } from "@mui/material";
-import styles from "../styles/Profile.module.scss";
-import { useParams, Link } from "react-router-dom";
+import styles from "../../styles/Profile.module.scss";
+import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
-import { BaseNovel } from "../typings/models";
-import NovelWrapper from "../components/NovelWrapper";
-import Review from "../components/Review";
-import AppService from "../api/app.service";
-import profileStore from "../store/proflePageStore";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import authStore from "../store/authStore";
+import profileStore from "../../store/profilePageStore";
 import { observer } from "mobx-react-lite";
+import authStore from "../../store/authStore";
 
 type ProfileHeaderProps = {
   username: string | undefined;
 };
 
-const ProfileHeader: React.FC<ProfileHeaderProps> = observer(({ username }) => {
+const ProfileHeader: React.FC<ProfileHeaderProps> = ({ username }) => {
   let navigate = useNavigate();
   function stringToHslColor(str: string, s: number, l: number): string {
     var hash = 0;
@@ -44,7 +39,7 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = observer(({ username }) => {
     }
   };
   return (
-    <div className={styles.profileHeader}>
+    <div className={"profileHeader"}>
       {profileStore.User && (
         <>
           {profileStore.User.headerCover && profileStore.User.headerCover && (
@@ -130,59 +125,12 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = observer(({ username }) => {
             >
               Lists
             </Link>
-            <Link to={`/user/lists/new`}>Create new list</Link>
+            <Link to={`/lists/new`}>Create new list</Link>
           </div>
         </>
       )}
     </div>
   );
-});
-
-type ProfileProps = {};
-const Profile: React.FC<ProfileProps> = () => {
-  const { username } = useParams();
-  const getProfileData = async () => {
-    if (username) {
-      const data = await AppService.getProfileData(username);
-      profileStore.setProfile(data);
-    }
-  };
-
-  React.useEffect(() => {
-    getProfileData();
-  }, []);
-  return (
-    <>
-      <ProfileHeader username={username} />
-      <div className={styles.profileBody}>
-        <section id={styles.favourites}>
-          <h2 className="sectionHeading">favourites</h2>
-          <ul className={styles.favouritesList}>
-            {profileStore.favourites
-              ? profileStore.favourites.map((novel: BaseNovel) => (
-                  <li key={novel.id}>
-                    {
-                      <NovelWrapper
-                        novel={novel}
-                        type={"big"}
-                        addBtnShowing={false}
-                      />
-                    }
-                  </li>
-                ))
-              : "-"}
-          </ul>
-        </section>
-        <section id={styles.lists}>
-          <h2 className="sectionHeading">recent reviews</h2>
-          {profileStore.reviews
-            ? profileStore.reviews.map((review, index) => (
-                <Review key={index} review={review} />
-              ))
-            : "-"}
-        </section>
-      </div>
-    </>
-  );
 };
-export default observer(Profile);
+
+export default observer(ProfileHeader);

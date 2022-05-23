@@ -10,7 +10,6 @@
     row-gap: 10px;
   }
   .posterWrapper {
-    margin-top: 10px;
     align-self: center;
     img {
       border-radius: 4px;
@@ -30,22 +29,27 @@
     font-size: 32px;
     margin: 0 0 15px;
   }
-  .info {
-    padding-bottom: 50px;
-    .synopsis {
-      text-align: justify;
-    }
+  section {
+    padding-bottom: 40px;
   }
-  .info > div {
-    margin-bottom: 5px;
+  .info .synopsis {
+    text-align: justify;
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
   }
   .writeReview {
     .form {
       display: flex;
       flex-direction: column;
       row-gap: 10px;
-      button {
-        align-self: flex-end;
+      .btnsRow {
+        display: flex;
+        column-gap: 10px;
+        justify-content: flex-end;
       }
     }
   }

@@ -19,7 +19,7 @@ type reviewProps = {
 const ReviewWithPoster = (review: ReviewModelWithNovel) => {
   return (
     <>
-      <div style={{ alignSelf: "flex-start", marginTop: "15px" }}>
+      <div>
         <NovelWrapper
           novel={review.Novel}
           type={"medium"}
@@ -66,39 +66,37 @@ const ReviewWithUserInfo = (review: ReviewModelWithUser) => {
         <>
           <div style={{ paddingTop: "10px" }}>
             <Link to={`/user/${review.User.username}`}>
-              <Avatar sx={{ backgroundColor: "var(--text-color)" }} />
+              <Avatar
+                sx={{
+                  backgroundColor: "var(--third-background-color)",
+                  color: "var(--text-color)",
+                }}
+              />
             </Link>
           </div>
-          <div className={styles.review__body}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                width: "100%",
-              }}
-            >
-              <div className={styles.reviewer}>
-                Reviewed by{" "}
-                <Link to={`/user/${review.User.username}`}>
-                  <b>{review.User.username}</b>
-                </Link>
+          <div className={styles.review}>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div className={styles.review__header}>
+                <div className={styles.reviewer}>
+                  Reviewed by{" "}
+                  <Link to={`/user/${review.User.username}`}>
+                    <b>{review.User.username}</b>
+                  </Link>
+                </div>
+                {review.updatedAt && (
+                  <span
+                    className={styles.review__date}
+                    title={new Date(review.updatedAt).toLocaleString()}
+                  >
+                    {setPostedDate(review.updatedAt)}
+                  </span>
+                )}
               </div>
-              {review.updatedAt && (
-                <span title={new Date(review.updatedAt).toLocaleString()}>
-                  {setPostedDate(review.updatedAt)}
-                </span>
+              {showEditButton() && (
+                <button onClick={() => setEditing(!editing)}>Edit</button>
               )}
             </div>
-            <p className={styles.content}>{review.content}</p>
-            {showEditButton() && (
-              <Button
-                variant="outlined"
-                sx={{ alignSelf: "flex-start" }}
-                onClick={() => setEditing(!editing)}
-              >
-                Edit
-              </Button>
-            )}
+            <p className={styles.review__body}>{review.content}</p>
           </div>
         </>
       )}
@@ -194,7 +192,7 @@ const ReviewWithUserInfo = (review: ReviewModelWithUser) => {
 
 const ReviewWrapper: React.FC<reviewProps> = ({ review }) => {
   return (
-    <div className={styles.review}>
+    <div className={styles.reviewWrapper}>
       {"User" in review ? ReviewWithUserInfo(review) : ReviewWithPoster(review)}
     </div>
   );

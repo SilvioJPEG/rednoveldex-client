@@ -22,7 +22,7 @@ const Main: React.FC = () => {
       });
   }, []);
   return (
-    <div className={styles.mainPage}>
+    <div className={styles.mainPage + " container"}>
       {recentNovels?.length !== 0 && recentNovels && (
         <section className={styles.recentlyAdded}>
           <h2 className="sectionHeading">Recently added</h2>

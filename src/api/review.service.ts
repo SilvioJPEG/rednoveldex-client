@@ -23,7 +23,10 @@ export default class ReviewService {
   static async updateReview(
     updatedReview: updatedReview
   ): Promise<ReviewModel> {
-    const res = await $api.patch<ReviewModel>("/reviews", updatedReview);
+    const res = await $api.patch<ReviewModel>(
+      `/reviews/${updatedReview.id}`,
+      updatedReview
+    );
     return res.data;
   }
 

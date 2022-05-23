@@ -16,26 +16,20 @@ const removeBodyClass = (className: string) =>
 
 function RequireLogout({ children }: { children: JSX.Element }) {
   let location = useLocation();
-
   if (authStore.loggedInStatus) {
     return <Navigate to="/" state={{ from: location }} replace />;
   }
-
   return children;
 }
+
 function RequireAuth({ children }: { children: JSX.Element }) {
   let location = useLocation();
-
   if (!authStore.loggedInStatus) {
-    // Redirect them to the /login page, but save the current location they were
-    // trying to go to when they were redirected. This allows us to send them
-    // along to that page after they login, which is a nicer user experience
-    // than dropping them off on the home page.
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
-
   return children;
 }
+
 function App() {
   const [theme, setTheme] = React.useState<"dark" | "light">("dark");
   const replaceThemeTo = (newTheme: "dark" | "light") => {
@@ -75,7 +69,7 @@ function App() {
   return (
     <>
       <Header />
-      <main className="content">
+      <main>
         <Routes>
           <Route path="/">
             <Route index element={<pages.Main />} />
@@ -115,13 +109,23 @@ function App() {
                 </RequireAuth>
               }
             />
-            <Route path="novel/:id" element={<pages.NovelInfo />} />
-            <Route path="novel/add" element={<pages.FindNovel />} />
+
+            <Route path="novel">
+              <Route path=":id" element={<pages.NovelInfo />} />
+              <Route path="add" element={<pages.FindNovel />} />
+            </Route>
+
             <Route path="user">
               <Route path=":username">
-                <Route path="" element={<pages.Profile />} />
-                <Route path="journal" element={<pages.Journal />} />
-                <Route path="lists" element={<pages.UsersLists />} />
+                <Route path="" element={<pages.Profile childComp={<pages.ProfileHome />} />} />
+                <Route
+                  path="journal"
+                  element={<pages.Profile childComp={<pages.Journal />} />}
+                />
+                <Route
+                  path="lists"
+                  element={<pages.Profile childComp={<pages.UsersLists />} />}
+                />
               </Route>
             </Route>
           </Route>

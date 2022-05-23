@@ -76,3 +76,10 @@ export type statusType =
   | "on-hold"
   | "dropped"
   | "plan-to-read";
+
+export type List = {
+  name: string;
+  description: string;
+  novels: BaseNovel[];
+  user: UserData;
+};

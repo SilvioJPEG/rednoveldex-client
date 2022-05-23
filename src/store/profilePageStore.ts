@@ -30,6 +30,10 @@ class ProfileStore {
   setFavourites(favourites: BaseNovel[]) {
     this.favourites = favourites;
   }
+
+  setBody(body: "overview" | "lists" | "journal") {
+    this.body = body;
+  }
 }
 
 export default new ProfileStore();

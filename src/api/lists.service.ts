@@ -1,4 +1,6 @@
+import ListsStore from "../store/ListsStore";
 import { createListDto } from "../typings/dto";
+import { List } from "../typings/models";
 import { $api } from "./auth.service";
 
 export default class ListsService {
@@ -18,7 +20,7 @@ export default class ListsService {
   }
 
   static async getByUsername(username: string) {
-    const res = await $api.get(`/lists/${username}`);
-    return res.data;
+    const res = await $api.get<List[]>(`/lists/${username}`);
+    ListsStore.setLists(res.data);
   }
 }

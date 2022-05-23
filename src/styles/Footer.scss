@@ -1,0 +1,33 @@
+.footerWrapper {
+  padding: 20px;
+  background-color: var(--header-color);
+  color: var(--header-text-color);
+  width: 100%;
+  border-top: 1px solid var(--header-text-color);
+  footer {
+    margin: auto;
+    max-width: 950px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+.theme-picker {
+  display: flex;
+  flex-direction: column;
+  div {
+    display: flex;
+  }
+}
+
+.theme-preview {
+  border: 2px solid var(--header-text-color);
+  display: block;
+  border-radius: 2px;
+  font-weight: 500;
+  height: 25px;
+  margin-right: 10px;
+  padding-left: 2px;
+  padding-top: 5px;
+  width: 25px;
+}

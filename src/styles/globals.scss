@@ -5,7 +5,7 @@
   --header-color: #14181c;
   --header-text-color: #99aabb;
   --global-search-color: #202428;
-  --color-overlay: #474747e6;
+  --overlay-color: #474747e6;
   --blue-accent-color: #29a2e7;
 }
 
@@ -50,6 +50,13 @@ a {
   color: inherit;
   text-decoration: none;
 }
+main {
+  flex: 1 0 auto;
+}
+.container {
+  max-width: 950px;
+  margin: 30px auto 20px;
+}
 
 input,
 textarea {
@@ -63,13 +70,9 @@ textarea {
     outline: none;
   }
 }
+
 textarea {
   resize: vertical;
-}
-
-.content {
-  margin: 0 auto 20px;
-  width: 950px;
 }
 
 .sectionHeading {
@@ -124,6 +127,7 @@ ul {
     }
     li {
       display: flex;
+      align-items: center;
       column-gap: 10px;
       &:hover {
         cursor: pointer;
@@ -138,49 +142,25 @@ ul {
   }
 }
 
-.accountHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 .date-picker {
   width: auto;
 }
 
-footer {
-  margin-top: auto;
-  padding: 50px 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: var(--header-color);
-  color: var(--header-text-color);
-  width: 100%;
-  border-top: 1px solid var(--header-text-color);
-}
-.theme-picker {
+section.about {
   display: flex;
   flex-direction: column;
-  div {
+  .about__question {
+    margin: 40px 0;
     display: flex;
+    flex-direction: column;
+    row-gap: 15px;
   }
-}
-
-.theme-preview {
-  border: 2px solid var(--header-text-color);
-  display: block;
-  border-radius: 2px;
-  font-weight: 500;
-  height: 25px;
-  margin-right: 10px;
-  padding-left: 2px;
-  padding-top: 5px;
-  width: 25px;
-}
-
-.about {
-  display: flex;
-  flex-direction: column;
+  a {
+    color: var(--accent-color);
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .fieldWrapper {
@@ -198,14 +178,6 @@ footer {
   flex-direction: column;
 }
 
-section.about {
-  a {
-    color: var(--accent-color);
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-}
 button {
   border: 0;
   display: flex;
@@ -213,6 +185,7 @@ button {
   justify-content: space-around;
   padding: 10px 16px;
   border-radius: 4px;
+  letter-spacing: 1px;
   color: var(--text-color);
   background-color: var(--third-background-color);
   &:hover {
@@ -280,3 +253,15 @@ button {
 .link_selected {
   color: var(--hover-text-color);
 }
+
+.type-writer::after {
+  content: "|";
+  animation: blink 1.1s infinite step-start;
+}
+
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+

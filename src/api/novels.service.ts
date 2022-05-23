@@ -4,9 +4,12 @@ import novelStore from "../store/novelPageStore";
 
 export default class NovelsService {
   static async getNovelData(id: number) {
-    const res = await $api.get<Novel>(`/novels/${id}`);
+    const res = await $api.get<{ novel: Novel; averageScore: number }>(
+      `/novels/${id}`
+    );
     if (Object.keys(res.data).length !== 0) {
-      novelStore.setNovel(res.data);
+      novelStore.setNovel(res.data.novel);
+      novelStore.setAverageScore(res.data.averageScore);
     } else {
       novelStore.setEmpty();
     }

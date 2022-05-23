@@ -47,7 +47,7 @@ const CreateListPage: React.FC = () => {
     setList(list.filter((item: BaseNovel) => item !== novel));
   };
   return (
-    <article>
+    <article className="container">
       <h1>New List</h1>
       <Formik
         initialValues={initialValues}
