@@ -125,7 +125,6 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({ username }) => {
             >
               Lists
             </Link>
-            <Link to={`/lists/new`}>Create new list</Link>
           </div>
         </>
       )}

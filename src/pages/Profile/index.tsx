@@ -4,6 +4,7 @@ import profileStore from "../../store/profilePageStore";
 import { observer } from "mobx-react-lite";
 import ProfileHeader from "./ProfileHeader";
 import { useParams } from "react-router-dom";
+import ListsStore from "../../store/ListsStore";
 
 type ProfileProps = {
   childComp: React.ReactNode;
@@ -19,6 +20,10 @@ const Profile: React.FC<ProfileProps> = ({ childComp }) => {
 
   React.useEffect(() => {
     getProfileData();
+    return function () {
+      profileStore.setProfile(null);
+      ListsStore.setLists(null);
+    };
   }, []);
   return (
     <div className="container">

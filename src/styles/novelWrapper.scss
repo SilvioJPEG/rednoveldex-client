@@ -14,7 +14,8 @@
   img {
     width: inherit;
     border-radius: inherit;
-    max-height: inherit;
+    height: inherit;
+    object-fit: cover;
   }
   &:hover {
     cursor: pointer;
@@ -78,7 +79,8 @@
 }
 .novelWrapper_big {
   width: 200px;
-  max-height: 287px;
+  height: 270px;
+
   &:hover {
     .overlay {
       border: 3px solid var(--accent-color);

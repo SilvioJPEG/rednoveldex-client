@@ -7,7 +7,7 @@ class ListsStore {
     makeAutoObservable(this);
   }
 
-  setLists(lists: List[]) {
+  setLists(lists: List[] | null) {
     this.lists = lists;
   }
 }

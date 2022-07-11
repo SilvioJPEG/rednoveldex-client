@@ -78,8 +78,8 @@ export type statusType =
   | "plan-to-read";
 
 export type List = {
+  id: number;
   name: string;
   description: string;
   novels: BaseNovel[];
-  user: UserData;
 };

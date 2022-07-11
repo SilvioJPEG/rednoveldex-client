@@ -4,6 +4,11 @@ import { List } from "../typings/models";
 import { $api } from "./auth.service";
 
 export default class ListsService {
+  static async getByUsername(username: string) {
+    const res = await $api.get<List[]>("/lists", { params: { username } });
+    ListsStore.setLists(res.data);
+  }
+  
   static async create(createListDto: createListDto) {
     const res = await $api.post("/lists", createListDto);
     return res.data;
@@ -14,13 +19,8 @@ export default class ListsService {
     return res.data;
   }
 
-  static async delete(list_id: number) {
-    const res = await $api.delete("/lists", { data: list_id });
+  static async delete(id: number) {
+    const res = await $api.delete(`/lists/${id}`);
     return res.data;
-  }
-
-  static async getByUsername(username: string) {
-    const res = await $api.get<List[]>(`/lists/${username}`);
-    ListsStore.setLists(res.data);
   }
 }

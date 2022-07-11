@@ -12,6 +12,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import EditPopup from "../../components/Editor";
 import editorStore from "../../store/editorStore";
 import profileStore from "../../store/profilePageStore";
+
 function EmptyJournal() {
   return (
     <div
@@ -100,7 +101,7 @@ const Journal: React.FC = () => {
       ) : journalList.length !== 0 ? (
         <table className={styles.table}>
           <tbody>
-            <tr className={styles.table__row}>
+            <tr className={[styles.table__row, styles.table__header].join(' ')}>
               <td className={styles.status}></td>
               <td>#</td>
               <td>Image</td>
@@ -112,11 +113,10 @@ const Journal: React.FC = () => {
             {journalList.map((entity, index) => (
               <tr
                 key={entity.Novel.id}
-                className={styles.table__row}
-                style={
-                  index % 2
-                    ? { backgroundColor: "var(--secondary-background-color)" }
-                    : {}
+                className={
+                  styles.table__row +
+                  " " +
+                  (index % 2 ? styles.table__row_light : "")
                 }
               >
                 <td className={styles.status + " " + entity.status}></td>

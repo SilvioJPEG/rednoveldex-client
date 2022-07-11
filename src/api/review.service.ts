@@ -9,8 +9,10 @@ type updatedReview = {
 export default class ReviewService {
   static async addReview(novel_id: number, content: string) {
     const res = await $api.post("/reviews", {
-      novel_id: novel_id,
-      content: content,
+      params: {
+        novel_id: novel_id,
+        content: content,
+      },
     });
     return res.data;
   }
@@ -30,9 +32,13 @@ export default class ReviewService {
     return res.data;
   }
 
-  static async getReviews(novel_id: number): Promise<ReviewModel[]> {
-    let amount = 4;
-    const res = await $api.get<ReviewModel[]>(`/reviews/${novel_id}/${amount}`);
+  static async getReviews(
+    novel_id: number,
+    amount?: number
+  ): Promise<ReviewModel[]> {
+    const res = await $api.get<ReviewModel[]>("/reviews", {
+      params: { novel_id, amount },
+    });
     if (res.status === 200) {
       return res.data;
     } else {
@@ -59,7 +65,9 @@ export default class ReviewService {
   }
 
   static async checkIfAlready(novel_id: number): Promise<ReviewModel> {
-    const res = await $api.get<ReviewModel>(`reviews/${novel_id}`);
+    const res = await $api.get<ReviewModel>(`reviews/check`, {
+      params: { novel_id },
+    });
     return res.data;
   }
 }

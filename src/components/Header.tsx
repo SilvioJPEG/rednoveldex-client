@@ -43,6 +43,9 @@ const Header: React.FC = () => {
               <span className="navItem">
                 <Link to={`/novel/add`}>Add new VN</Link>
               </span>
+              <span className="navItem">
+                <Link to={`/lists/new`}>Create new list</Link>
+              </span>
               <span className="navItem" onClick={() => authStore.logout()}>
                 Logout
               </span>

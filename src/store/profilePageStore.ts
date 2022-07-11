@@ -20,6 +20,8 @@ class ProfileStore {
       this.journalLength = data.journalLength;
       this.setReviews(data.reviews);
       this.setFavourites(data.favourites);
+    } else {
+      this.setEmpty();
     }
   }
 
@@ -33,6 +35,14 @@ class ProfileStore {
 
   setBody(body: "overview" | "lists" | "journal") {
     this.body = body;
+  }
+
+  setEmpty() {
+    this.User = null;
+    this.listsAmount = 0;
+    this.journalLength = 0;
+    this.reviews = null;
+    this.favourites = null;
   }
 }
 

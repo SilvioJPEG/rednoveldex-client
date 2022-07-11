@@ -99,6 +99,7 @@ function App() {
                   </RequireAuth>
                 }
               />
+              <Route path=":id" element={<pages.SingleList />} />
             </Route>
 
             <Route
@@ -111,13 +112,16 @@ function App() {
             />
 
             <Route path="novel">
-              <Route path=":id" element={<pages.NovelInfo />} />
+              <Route path=":id" element={<pages.SingleNovel />} />
               <Route path="add" element={<pages.FindNovel />} />
             </Route>
 
             <Route path="user">
               <Route path=":username">
-                <Route path="" element={<pages.Profile childComp={<pages.ProfileHome />} />} />
+                <Route
+                  path=""
+                  element={<pages.Profile childComp={<pages.ProfileHome />} />}
+                />
                 <Route
                   path="journal"
                   element={<pages.Profile childComp={<pages.Journal />} />}
